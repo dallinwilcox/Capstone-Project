@@ -16,7 +16,10 @@ import android.widget.TextView;
 
 
 import com.dallinwilcox.turnitdown.dummy.DummyContent;
+import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -26,9 +29,14 @@ import java.util.List;
  * lead to a {@link DeviceDetailActivity} representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
+ *
+ * Referenced:
+ * https://github.com/firebase/FirebaseUI-Android/blob/master/auth/README.md
  */
+
 public class DeviceListActivity extends AppCompatActivity {
 
+    private static final int RC_SIGN_IN = 42;
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
@@ -63,6 +71,25 @@ public class DeviceListActivity extends AppCompatActivity {
             // If this view is present, then the
             // activity should be in two-pane mode.
             mTwoPane = true;
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        if (null != auth.getCurrentUser()) {
+            // already signed in
+        }
+        else {
+            startActivityForResult(
+                    AuthUI.getInstance()
+                            .createSignInIntentBuilder()
+                            .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                    new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
+                            .setIsSmartLockEnabled(!BuildConfig.DEBUG)
+                            .build(),
+                    RC_SIGN_IN);
         }
     }
 
