@@ -27,3 +27,8 @@
 #For Firebase Authentication
 -keepattributes Signature
 -keepattributes *Annotation*
+
+#For Firebase Realitme Database
+-keepclassmembers class com.dallinwilcox.models.** {
+  *;
+}
