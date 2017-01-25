@@ -30,6 +30,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dallinwilcox.turnitdown.DeviceListActivity" />
         </activity>
+        <activity android:name=".AuthActivity"></activity>
     </application>
 
 </manifest>
