@@ -20,6 +20,7 @@ import java.util.Arrays;
  */
 public class AuthActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 42;
+    private static final String TAG = "AuthActivity";
     View view;
 
     @Override
@@ -45,6 +46,7 @@ public class AuthActivity extends AppCompatActivity {
                             .build(),
                     RC_SIGN_IN);
         }
+
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
