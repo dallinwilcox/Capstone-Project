@@ -7,11 +7,12 @@ import android.os.Build;
  */
 
 public class Device {
+    public enum DeviceType {PHONE, TABLET, WATCH, TV}
     String id;
     String name;
     String model;
     String manufacturer;
-    int deviceType;
+    DeviceType deviceType;
     int mediaVolume;
     int alarmVolume;
     int ringVolume;
@@ -24,6 +25,6 @@ public class Device {
         this.name = Build.MODEL;
         this.model = Build.MODEL;
         this.manufacturer = Build.MANUFACTURER;
-        this.deviceType = 0;
+        this.deviceType = DeviceType.PHONE;
     }
 }
