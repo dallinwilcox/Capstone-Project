@@ -12,6 +12,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:supportsRtl"
         android:name=".TurnItDownApplication">
+        <uses-permission android:name="android.permission.INTERNET"/>
         <activity
             android:name=".DeviceListActivity"
             android:label="@string/app_name"
