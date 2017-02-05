@@ -3,21 +3,72 @@ package com.dallinwilcox.turnitdown.data;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.IntDef;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Created by dcwilcox on 1/31/2017.
  */
 
 public class Device implements Parcelable{
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({PHONE, TABLET, WATCH, TV})
+    public @interface DeviceType {}
+    public static final int PHONE = 0;
+    public static final int TABLET = 1;
+    public static final int WATCH = 2;
+    public static final int TV = 3;
+
+    String id;
+    String name;
+    String model;
+    String manufacturer;
+    int deviceType;
+    int mediaVolume;
+    int alarmVolume;
+    int ringVolume;
+    int notificationVolume;
+
+    public Device()
+    {
+        //TODO generate an ID
+        this.id = "";
+        this.name = Build.MODEL;
+        this.model = Build.MODEL;
+        this.manufacturer = Build.MANUFACTURER;
+        this.deviceType = PHONE;
+    }
+
     protected Device(Parcel in) {
         id = in.readString();
         name = in.readString();
         model = in.readString();
         manufacturer = in.readString();
+        deviceType = in.readInt();
         mediaVolume = in.readInt();
         alarmVolume = in.readInt();
         ringVolume = in.readInt();
         notificationVolume = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(model);
+        dest.writeString(manufacturer);
+        dest.writeInt(deviceType);
+        dest.writeInt(mediaVolume);
+        dest.writeInt(alarmVolume);
+        dest.writeInt(ringVolume);
+        dest.writeInt(notificationVolume);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<Device> CREATOR = new Creator<Device>() {
@@ -32,41 +83,76 @@ public class Device implements Parcelable{
         }
     };
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getId() {
+        return id;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(name);
-        dest.writeString(model);
-        dest.writeString(manufacturer);
-        dest.writeInt(mediaVolume);
-        dest.writeInt(alarmVolume);
-        dest.writeInt(ringVolume);
-        dest.writeInt(notificationVolume);
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public enum DeviceType {PHONE, TABLET, WATCH, TV}
-    String id;
-    String name;
-    String model;
-    String manufacturer;
-    DeviceType deviceType;
-    int mediaVolume;
-    int alarmVolume;
-    int ringVolume;
-    int notificationVolume;
+    public String getName() {
+        return name;
+    }
 
-    public Device()
-    {
-        //TODO generate an ID
-        this.id = "";
-        this.name = Build.MODEL;
-        this.model = Build.MODEL;
-        this.manufacturer = Build.MANUFACTURER;
-        this.deviceType = DeviceType.PHONE;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    @DeviceType
+    public int getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(@DeviceType int deviceType) {
+        this.deviceType = deviceType;
+    }
+
+    public int getMediaVolume() {
+        return mediaVolume;
+    }
+
+    public void setMediaVolume(int mediaVolume) {
+        this.mediaVolume = mediaVolume;
+    }
+
+    public int getAlarmVolume() {
+        return alarmVolume;
+    }
+
+    public void setAlarmVolume(int alarmVolume) {
+        this.alarmVolume = alarmVolume;
+    }
+
+    public int getRingVolume() {
+        return ringVolume;
+    }
+
+    public void setRingVolume(int ringVolume) {
+        this.ringVolume = ringVolume;
+    }
+
+    public int getNotificationVolume() {
+        return notificationVolume;
+    }
+
+    public void setNotificationVolume(int notificationVolume) {
+        this.notificationVolume = notificationVolume;
     }
 }
