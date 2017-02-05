@@ -9,6 +9,7 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * Created by dcwilcox on 1/31/2017.
+ * Referenced https://developer.android.com/studio/write/annotations.html#enum-annotations
  */
 
 public class Device implements Parcelable{
