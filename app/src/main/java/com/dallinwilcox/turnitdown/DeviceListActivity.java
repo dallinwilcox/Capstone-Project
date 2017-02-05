@@ -36,7 +36,7 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
     public static final String IDP_RESPONSE = "IdpResponse";
     @BindView(R.id.device_list) RecyclerView deviceList;
     @BindView(R.id.fab) FloatingActionButton fab;
-
+    @BindView(R.id.toolbar) Toolbar toolbar;
     private boolean isTablet;
     private final String TAG = "DeviceListActivity";
     private DeviceListAdapter deviceListAdapter;
@@ -51,7 +51,6 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
 
         dbRef = FirebaseDatabase.getInstance().getReference();
         deviceRef = dbRef.child("device");
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
