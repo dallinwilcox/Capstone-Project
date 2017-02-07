@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
+import com.dallinwilcox.turnitdown.data.Device;
+
 /**
  * An activity representing a single Device detail screen. This
  * activity is only used narrow width devices. On tablet-size devices,
@@ -53,8 +55,8 @@ public class DeviceDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(DeviceDetailFragment.DEVICE_EXTRA,
-                    getIntent().getStringExtra(DeviceDetailFragment.DEVICE_EXTRA));
+            arguments.putString(Device.DEVICE_EXTRA,
+                    getIntent().getStringExtra(Device.DEVICE_EXTRA));
             DeviceDetailFragment fragment = new DeviceDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()

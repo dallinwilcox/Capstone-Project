@@ -18,11 +18,6 @@ import com.dallinwilcox.turnitdown.data.Device;
  * on handsets.
  */
 public class DeviceDetailFragment extends Fragment {
-    /**
-     * The fragment argument representing the item ID that this fragment
-     * represents.
-     */
-    public static final String DEVICE_EXTRA = "item_id";
 
     /**
      * The dummy content this fragment is presenting.
@@ -40,11 +35,11 @@ public class DeviceDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey(DEVICE_EXTRA)) {
+        if (getArguments().containsKey(Device.DEVICE_EXTRA)) {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
-            device = getArguments().getParcelable(DEVICE_EXTRA);
+            device = getArguments().getParcelable(Device.DEVICE_EXTRA);
 
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);

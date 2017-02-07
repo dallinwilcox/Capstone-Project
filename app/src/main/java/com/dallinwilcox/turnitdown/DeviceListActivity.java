@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.dallinwilcox.turnitdown.data.Device;
 import com.dallinwilcox.turnitdown.inf.OnItemClick;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
@@ -97,7 +98,7 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
     public void onItemClicked(int position) {
         if (isTablet) {
             Bundle arguments = new Bundle();
-            arguments.putParcelable(DeviceDetailFragment.DEVICE_EXTRA, deviceListAdapter.get(position));
+            arguments.putParcelable(Device.DEVICE_EXTRA, deviceListAdapter.get(position));
             DeviceDetailFragment fragment = new DeviceDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -105,7 +106,7 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
                     .commit();
         } else {
             Intent intent = new Intent(getApplicationContext(), DeviceDetailActivity.class);
-            intent.putExtra(DeviceDetailFragment.DEVICE_EXTRA, deviceListAdapter.get(position));
+            intent.putExtra(Device.DEVICE_EXTRA, deviceListAdapter.get(position));
             startActivity(intent);
         }
     }

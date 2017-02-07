@@ -14,6 +14,12 @@ import java.lang.annotation.RetentionPolicy;
 
 public class Device implements Parcelable{
 
+    /**
+     * The fragment argument representing the item ID that this fragment
+     * represents.
+     */
+    public static final String DEVICE_EXTRA = "item_id";
+
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({PHONE, TABLET, WATCH, TV})
     public @interface DeviceType {}
