@@ -12,8 +12,31 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="Name"
-        tools:layout_editor_absoluteX="52dp"
-        tools:layout_editor_absoluteY="35dp" />
+        android:text="Device Name"
+        tools:layout_editor_absoluteX="53dp"
+        tools:layout_editor_absoluteY="47dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Device Type"
+        tools:layout_editor_absoluteX="53dp"
+        tools:layout_editor_absoluteY="90dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Device Name"
+        tools:layout_editor_absoluteX="53dp"
+        tools:layout_editor_absoluteY="30dp" />
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="218dp"
+        android:layout_height="41dp"
+        tools:layout_editor_absoluteY="103dp"
+        tools:layout_editor_absoluteX="53dp" />
 
 </android.support.constraint.ConstraintLayout>
