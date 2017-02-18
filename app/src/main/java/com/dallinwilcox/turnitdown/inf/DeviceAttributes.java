@@ -12,6 +12,7 @@ public class DeviceAttributes {
 
     public static boolean isTablet(Context context)
     {
+        //referenced http://stackoverflow.com/questions/9279111/determine-if-the-device-is-a-smartphone-or-tablet
         return context.getResources().getBoolean(R.bool.isTablet);
     }
 }
