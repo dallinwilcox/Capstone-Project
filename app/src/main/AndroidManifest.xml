@@ -34,7 +34,7 @@
                 android:value="com.dallinwilcox.turnitdown.DeviceListActivity" />
         </activity>
         <activity android:name=".AuthActivity" />
-        <activity android:name=".DeviceProperties"></activity>
+        <activity android:name=".DevicePropertiesActivity"></activity>
     </application>
 
 </manifest>

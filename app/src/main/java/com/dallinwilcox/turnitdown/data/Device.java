@@ -1,5 +1,7 @@
 package com.dallinwilcox.turnitdown.data;
 
+import android.databinding.BaseObservable;
+import android.databinding.Observable;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -12,7 +14,7 @@ import java.lang.annotation.RetentionPolicy;
  * Referenced https://developer.android.com/studio/write/annotations.html#enum-annotations
  */
 
-public class Device implements Parcelable{
+public class Device extends BaseObservable implements Parcelable{
 
     /**
      * The fragment argument representing the item ID that this fragment
