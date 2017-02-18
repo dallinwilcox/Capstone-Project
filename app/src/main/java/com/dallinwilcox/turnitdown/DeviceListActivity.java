@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.dallinwilcox.turnitdown.data.Device;
+import com.dallinwilcox.turnitdown.inf.DeviceAttributes;
 import com.dallinwilcox.turnitdown.inf.OnItemClick;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
@@ -66,14 +67,7 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
         deviceListAdapter = new DeviceListAdapter();
         deviceList.setAdapter(deviceListAdapter);
         deviceListAdapter.setItemClick(this);
-
-        if (findViewById(R.id.device_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            isTablet = true;
-        }
+        isTablet = DeviceAttributes.isTablet(getApplicationContext());
     }
 
     @Override
