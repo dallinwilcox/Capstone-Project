@@ -29,6 +29,6 @@
 -keepattributes *Annotation*
 
 #For Firebase Realitme Database
--keepclassmembers class com.dallinwilcox.models.** {
+-keepclassmembers class com.dallinwilcox.turnitdown.data.** {
   *;
 }
