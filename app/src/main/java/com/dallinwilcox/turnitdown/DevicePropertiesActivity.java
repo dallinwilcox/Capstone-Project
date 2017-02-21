@@ -27,6 +27,6 @@ public class DevicePropertiesActivity extends AppCompatActivity {
     public static Intent createIntent (Context context, Device device)
     {
         Log.d(DEVICE_PROPERTIES_ACTIVITY, "creatingIntent");
-        return new Intent(context, DeviceListActivity.class).putExtra(Device.DEVICE_EXTRA, device);
+        return new Intent(context, DevicePropertiesActivity.class).putExtra(Device.DEVICE_EXTRA, device);
     }
 }
