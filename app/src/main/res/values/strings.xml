@@ -8,6 +8,7 @@
     <string name="device_name">Device Name</string>
     <string name="device_manufacturer">Device Manufacturer</string>
     <string name="model">Model</string>
+    <string name="manufacturer">Manufacturer</string>
     <string name="device_type">Device Type</string>
     <string name="device_model">Device Model</string>
 
