@@ -93,7 +93,6 @@
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/device_manufacturer_label"
             app:layout_constraintLeft_toLeftOf="@+id/device_model_label"
-            android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp" />
         <TextView
             android:id="@+id/device_manufacturer_label"
@@ -115,7 +114,6 @@
             android:layout_height="21dp"
             tools:text="@string/device_manufacturer"
             android:text="@{device.manufacturer}"
-            android:layout_marginLeft="8dp"
             app:layout_constraintLeft_toLeftOf="@+id/device_manufacturer_label"
             android:layout_marginStart="8dp"
             tools:layout_constraintBottom_creator="1"
