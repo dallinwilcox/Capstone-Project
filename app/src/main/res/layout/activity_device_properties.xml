@@ -64,13 +64,14 @@
             android:layout_width="195dp"
             android:layout_height="28dp"
             android:entries="@array/device_types_array"
+            android:layout_marginStart="8dp"
             tools:layout_constraintTop_creator="1"
             tools:layout_constraintBottom_creator="1"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             tools:layout_constraintLeft_creator="1"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@+id/device_model_label"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:selection="@{device.deviceType}"/>
 
         <TextView
             android:id="@+id/device_model_label"
