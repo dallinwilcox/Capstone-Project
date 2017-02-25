@@ -3,6 +3,7 @@ package com.dallinwilcox.turnitdown;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +16,9 @@ import com.dallinwilcox.turnitdown.data.Device;
 import com.dallinwilcox.turnitdown.inf.DeviceAttributes;
 import com.dallinwilcox.turnitdown.inf.OnItemClick;
 import com.firebase.ui.auth.IdpResponse;
+import com.firebase.ui.auth.ui.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -60,8 +63,16 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               Intent enrollDeviceIntent = DevicePropertiesActivity.createIntent(DeviceListActivity.this.getApplicationContext(), new Device());
-               DeviceListActivity.this.startActivity(enrollDeviceIntent);
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (null != user && null != user.getUid()) {
+                    Intent enrollDeviceIntent =
+                            DevicePropertiesActivity.createIntent(
+                                    DeviceListActivity.this.getApplicationContext(),
+                                    new Device(user.getUid()));
+                    DeviceListActivity.this.startActivity(enrollDeviceIntent);
+                } else {
+                    //TODO Display Snackbar
+                }
             }
         });
 

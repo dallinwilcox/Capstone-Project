@@ -16,10 +16,6 @@ import java.lang.annotation.RetentionPolicy;
 
 public class Device extends BaseObservable implements Parcelable{
 
-    /**
-     * The fragment argument representing the item ID that this fragment
-     * represents.
-     */
     public static final String DEVICE_EXTRA = "item_id";
 
     @Retention(RetentionPolicy.SOURCE)
@@ -30,7 +26,7 @@ public class Device extends BaseObservable implements Parcelable{
     public static final int WATCH = 2;
     public static final int TV = 3;
 
-    String id;
+    String user;
     String name;
     String model;
     String manufacturer;
@@ -40,10 +36,12 @@ public class Device extends BaseObservable implements Parcelable{
     int ringVolume;
     int notificationVolume;
 
-    public Device()
+    //empty constructor
+    public Device(){}
+
+    public Device(String user)
     {
-        //TODO generate an ID
-        this.id = "";
+        this.user = user;
         this.name = Build.MODEL;
         this.model = Build.MODEL;
         this.manufacturer = Build.MANUFACTURER;
@@ -51,7 +49,7 @@ public class Device extends BaseObservable implements Parcelable{
     }
 
     protected Device(Parcel in) {
-        id = in.readString();
+        user = in.readString();
         name = in.readString();
         model = in.readString();
         manufacturer = in.readString();
@@ -64,7 +62,7 @@ public class Device extends BaseObservable implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
+        dest.writeString(user);
         dest.writeString(name);
         dest.writeString(model);
         dest.writeString(manufacturer);
@@ -92,12 +90,12 @@ public class Device extends BaseObservable implements Parcelable{
         }
     };
 
-    public String getId() {
-        return id;
+    public String getUser() {
+        return user;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUser(String id) {
+        this.user = id;
     }
 
     public String getName() {
