@@ -7,20 +7,22 @@
 
     <ImageView
         android:id="@+id/media_volume_image"
-        android:layout_toStartOf="@id/media_volume_seekBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_volume_up_black_24dp" />
+        app:srcCompat="@drawable/ic_volume_up_black_24dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 
     <SeekBar
         android:id="@+id/media_volume_seekBar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/alarm_volume_image"
+        android:layout_toEndOf="@+id/media_volume_image" />
 
     <ImageView
         android:id="@+id/alarm_volume_image"
         android:layout_below="@id/media_volume_image"
-        android:layout_toStartOf="@id/alarm_volume_seekBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_alarm_black_24dp" />
@@ -28,12 +30,13 @@
     <SeekBar
         android:id="@+id/alarm_volume_seekBar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ring_volume_seekBar"
+        android:layout_toEndOf="@+id/alarm_volume_image" />
 
     <ImageView
         android:id="@+id/ring_volume_image"
         android:layout_below="@id/alarm_volume_image"
-        android:layout_toStartOf="@id/media_volume_seekBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_ring_volume_black_24dp" />
@@ -41,7 +44,9 @@
     <SeekBar
         android:id="@+id/ring_volume_seekBar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/alarm_volume_image"
+        android:layout_toEndOf="@+id/alarm_volume_image" />
 
     <ImageView
         android:id="@+id/notification_image"
@@ -55,7 +60,8 @@
         android:id="@+id/notification_seekBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp" />
+        android:layout_below="@+id/ring_volume_image"
+        android:layout_toEndOf="@+id/ring_volume_image" />
 
     <TextView
         android:id="@+id/device_detail"
