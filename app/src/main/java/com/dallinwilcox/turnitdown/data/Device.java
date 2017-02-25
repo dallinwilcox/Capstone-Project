@@ -26,6 +26,7 @@ public class Device extends BaseObservable implements Parcelable{
     public static final int WATCH = 2;
     public static final int TV = 3;
 
+    String id;
     String user;
     String name;
     String model;
@@ -39,8 +40,9 @@ public class Device extends BaseObservable implements Parcelable{
     //empty constructor
     public Device(){}
 
-    public Device(String user)
+    public Device(String id, String user)
     {
+        this.id = id;
         this.user = user;
         this.name = Build.MODEL;
         this.model = Build.MODEL;
@@ -49,6 +51,7 @@ public class Device extends BaseObservable implements Parcelable{
     }
 
     protected Device(Parcel in) {
+        id = in.readString();
         user = in.readString();
         name = in.readString();
         model = in.readString();
@@ -62,6 +65,7 @@ public class Device extends BaseObservable implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeString(user);
         dest.writeString(name);
         dest.writeString(model);
@@ -89,13 +93,18 @@ public class Device extends BaseObservable implements Parcelable{
             return new Device[size];
         }
     };
+    public String getId() { return id; }
+
+    public void setId(String id) {
+        this.user = id;
+    }
 
     public String getUser() {
         return user;
     }
 
-    public void setUser(String id) {
-        this.user = id;
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public String getName() {

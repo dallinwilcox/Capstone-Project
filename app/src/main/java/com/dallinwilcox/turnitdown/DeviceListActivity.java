@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,11 +65,12 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
             @Override
             public void onClick(View view) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                FirebaseInstanceId fbInstanceId = FirebaseInstanceId.getInstance();
                 if (null != user && null != user.getUid()) {
                     Intent enrollDeviceIntent =
                             DevicePropertiesActivity.createIntent(
                                     DeviceListActivity.this.getApplicationContext(),
-                                    new Device(user.getUid()));
+                                    new Device(fbInstanceId.getToken(), user.getUid()));
                     DeviceListActivity.this.startActivity(enrollDeviceIntent);
                 } else {
                     //TODO Display Snackbar
