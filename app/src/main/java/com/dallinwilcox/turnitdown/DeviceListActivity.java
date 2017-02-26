@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -73,7 +74,8 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
                                     new Device(fbInstanceId.getToken(), user.getUid()));
                     DeviceListActivity.this.startActivity(enrollDeviceIntent);
                 } else {
-                    //TODO Display Snackbar
+                    Snackbar.make(view, getString(R.string.error_adding_device), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
             }
         });
