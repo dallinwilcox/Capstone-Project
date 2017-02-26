@@ -63,7 +63,8 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
         deviceRef = dbRef.child("device");
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
-
+        //ensure Google APIs are available for FCM
+        GoogleApiAvailability.getInstance().makeGooglePlayServicesAvailable(this);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,6 +106,7 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
     @Override
     protected void onResume() {
         super.onResume();
+        //maybe I should just call GoogleApiAvailability.getInstance().makeGooglePlayServicesAvailable(this)
         GoogleApiAvailability gaa = GoogleApiAvailability.getInstance().getInstance();
         int gpsStatus = gaa.isGooglePlayServicesAvailable(getApplicationContext());
         if (ConnectionResult.SUCCESS != gpsStatus && gaa.isUserResolvableError(gpsStatus)){

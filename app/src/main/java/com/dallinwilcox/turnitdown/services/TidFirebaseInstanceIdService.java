@@ -1,13 +1,26 @@
 package com.dallinwilcox.turnitdown.services;
 
-import android.app.Service;
+import android.util.Log;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
 /**
  * Created by dcwilcox on 2/25/2017.
  */
-
+//referenced https://github.com/firebase/quickstart-android
 public class TidFirebaseInstanceIdService extends FirebaseInstanceIdService {
-    //TODO Implement me!
+    private static final String TAG = "TidFbInstanceIdService";
+    @Override
+    public void onTokenRefresh() {
+        // Get updated InstanceID token.
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG, "Refreshed token: " + refreshedToken);
+
+        // If you want to send messages to this application instance or
+        // manage this apps subscriptions on the server side, send the
+        // Instance ID token to your app server.
+        //TODO implement sending updated token to server
+        //sendRegistrationToServer(refreshedToken);
+    }
 }
