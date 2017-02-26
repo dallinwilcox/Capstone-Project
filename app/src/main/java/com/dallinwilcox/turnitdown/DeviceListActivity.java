@@ -18,6 +18,8 @@ import com.dallinwilcox.turnitdown.inf.DeviceAttributes;
 import com.dallinwilcox.turnitdown.inf.OnItemClick;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.ui.User;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -98,6 +100,16 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
             else {
                 startActivity( new Intent (getApplicationContext(), AuthActivity.class));
             }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        GoogleApiAvailability gaa = GoogleApiAvailability.getInstance().getInstance();
+        int gpsStatus = gaa.isGooglePlayServicesAvailable(getApplicationContext());
+        if (ConnectionResult.SUCCESS != gpsStatus && gaa.isUserResolvableError(gpsStatus)){
+                        gaa.showErrorDialogFragment(this, gpsStatus, 42);
+        }
     }
 
     public static Intent createIntent (Context context, IdpResponse response)
