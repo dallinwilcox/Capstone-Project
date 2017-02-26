@@ -71,6 +71,7 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
                     Intent enrollDeviceIntent =
                             DevicePropertiesActivity.createIntent(
                                     DeviceListActivity.this.getApplicationContext(),
+                                    //TODO handle null deviceToken
                                     new Device(fbInstanceId.getToken(), user.getUid()));
                     DeviceListActivity.this.startActivity(enrollDeviceIntent);
                 } else {

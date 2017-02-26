@@ -37,9 +37,6 @@ public class Device extends BaseObservable implements Parcelable{
     int ringVolume;
     int notificationVolume;
 
-    //empty constructor
-    public Device(){}
-
     public Device(String id, String user)
     {
         this.id = id;
