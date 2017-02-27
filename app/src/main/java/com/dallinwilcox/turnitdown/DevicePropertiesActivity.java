@@ -14,6 +14,7 @@ import com.dallinwilcox.turnitdown.databinding.ActivityDevicePropertiesBinding;
 
 public class DevicePropertiesActivity extends AppCompatActivity {
     public static final String DEVICE_PROPERTIES_ACTIVITY = "DevicePropActivity";
+    public static final String IS_NEW_DEVICE = "isNewDevice";
     private Device device;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

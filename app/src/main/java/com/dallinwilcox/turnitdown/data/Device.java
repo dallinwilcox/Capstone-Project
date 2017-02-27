@@ -16,7 +16,7 @@ import java.lang.annotation.RetentionPolicy;
 
 public class Device extends BaseObservable implements Parcelable{
 
-    public static final String DEVICE_EXTRA = "item_id";
+    public static final String DEVICE_EXTRA = "deviceExtra";
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({PHONE, TABLET, WATCH, TV})
@@ -167,5 +167,21 @@ public class Device extends BaseObservable implements Parcelable{
 
     public void setNotificationVolume(int notificationVolume) {
         this.notificationVolume = notificationVolume;
+    }
+
+    @Override
+    public String toString() {
+        return "Device{" +
+                "id='" + id + '\'' +
+                ", user='" + user + '\'' +
+                ", name='" + name + '\'' +
+                ", model='" + model + '\'' +
+                ", manufacturer='" + manufacturer + '\'' +
+                ", deviceType=" + deviceType +
+                ", mediaVolume=" + mediaVolume +
+                ", alarmVolume=" + alarmVolume +
+                ", ringVolume=" + ringVolume +
+                ", notificationVolume=" + notificationVolume +
+                '}';
     }
 }

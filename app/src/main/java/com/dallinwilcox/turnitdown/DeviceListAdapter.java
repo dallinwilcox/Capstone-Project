@@ -1,13 +1,11 @@
 package com.dallinwilcox.turnitdown;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dallinwilcox.turnitdown.data.Device;
@@ -37,17 +35,16 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
         //Init DB
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         //example DB Write
-        DatabaseReference myRef = database.getReference("message");
-        myRef.setValue("Hello, World!");
+        DatabaseReference myRef = database.getReference("devices");
         adapterDeviceList = new ArrayList<>();
-        // Read from the database
+        // Read from the database with a listener
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
-                Log.d(TAG, "Value is: " + value);
+                Device device = dataSnapshot.getValue(Device.class);
+                Log.d(TAG, "Device is: " + device);
             }
 
             @Override
@@ -68,8 +65,26 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
     @Override
     public void onBindViewHolder(final DeviceListViewHolder holder, int position) {
         holder.device = adapterDeviceList.get(position);
-        holder.mIdView.setText(adapterDeviceList.get(position).getId());
-        holder.mContentView.setText(adapterDeviceList.get(position).getName());
+        holder.deviceName.setText(holder.device.getName());
+        String[] deviceTypes = holder.deviceIcon.getContext().getResources().getStringArray(R.array.device_types_array);
+        switch (holder.device.getDeviceType()) {
+            case Device.WATCH:
+                holder.deviceIcon.setImageResource(R.drawable.ic_watch_black_24dp);
+                holder.deviceIcon.setContentDescription(deviceTypes[Device.WATCH]);
+                break;
+            case Device.TV:
+                holder.deviceIcon.setImageResource(R.drawable.ic_tv_black_24dp);
+                holder.deviceIcon.setContentDescription(deviceTypes[Device.TV]);
+                break;
+            case Device.TABLET:
+                holder.deviceIcon.setImageResource(R.drawable.ic_tablet_black_24dp);
+                holder.deviceIcon.setContentDescription(deviceTypes[Device.TABLET]);
+                break;
+            case Device.PHONE:
+            default:
+                holder.deviceIcon.setImageResource(R.drawable.ic_smartphone_black_24dp);
+                holder.deviceIcon.setContentDescription(deviceTypes[Device.PHONE]);
+        }
     }
 
     @Override
@@ -87,20 +102,20 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
 
     public class DeviceListViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
+        public final ImageView deviceIcon;
+        public final TextView deviceName;
         public Device device;
 
         public DeviceListViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            deviceIcon = (ImageView) view.findViewById(R.id.device_icon);
+            deviceName = (TextView) view.findViewById(R.id.device_name);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + deviceName.getText() + "'";
         }
     }
 }
