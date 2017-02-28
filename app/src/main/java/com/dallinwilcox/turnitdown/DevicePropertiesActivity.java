@@ -9,12 +9,13 @@ import android.util.Log;
 
 import com.dallinwilcox.turnitdown.data.Device;
 import com.dallinwilcox.turnitdown.databinding.ActivityDevicePropertiesBinding;
+import com.google.firebase.database.FirebaseDatabase;
+
 //referenced https://developer.android.com/topic/libraries/data-binding/
 //referenced http://www.vogella.com/tutorials/AndroidDatabinding/article.html
 
 public class DevicePropertiesActivity extends AppCompatActivity {
     public static final String DEVICE_PROPERTIES_ACTIVITY = "DevicePropActivity";
-    public static final String IS_NEW_DEVICE = "isNewDevice";
     private Device device;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +26,22 @@ public class DevicePropertiesActivity extends AppCompatActivity {
         binding.setDevice(device);
     }
 
+    @Override
+    protected void onPause() {
+        updateDB();
+        super.onPause();
+    }
+
     public static Intent createIntent (Context context, Device device)
     {
         Log.d(DEVICE_PROPERTIES_ACTIVITY, "creatingIntent");
         return new Intent(context, DevicePropertiesActivity.class).putExtra(Device.DEVICE_EXTRA, device);
     }
+
+    private void updateDB()
+    {
+        FirebaseDatabase.getInstance().getReference("devices/" + device.getUser() + "/" + device.getId()).setValue(device);
+    }
+
+
 }
