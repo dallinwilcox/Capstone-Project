@@ -29,22 +29,23 @@ import java.util.ArrayList;
  */
 
 public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.DeviceListViewHolder> {
-    public static final String TAG = "DeviceListAdapter";
+    private static final String TAG = "DeviceListAdapter";
     private ArrayList<Device> adapterDeviceList;
     private ArrayList<String> deviceIndexList;
+    private ChildEventListener adapterChildEventListener;
     private OnItemClick itemClick;
-
+    private DatabaseReference databaseReference;
 
     public DeviceListAdapter() {
-        //Init DB
+        //Init DB and reference
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        //example DB Write
         //TODO Consider passing in userId
-        DatabaseReference myRef = database.getReference("devices/"+ FirebaseAuth.getInstance().getCurrentUser().getUid());
+        //TODO make path reference a constant for re-use and better maintenance
+        databaseReference = database.getReference("devices/"+ FirebaseAuth.getInstance().getCurrentUser().getUid());
         adapterDeviceList = new ArrayList<>();
         deviceIndexList = new ArrayList<>();
         // Read from the database with a listener
-        ChildEventListener childEventListener = new ChildEventListener() {
+        adapterChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 // This method is called once with the initial value and again
@@ -131,14 +132,14 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
                 notifyItemMoved(fromPosition, toPosition);
             }
 
-
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
                 Log.w(TAG, "Failed to read value.", error.toException());
                 //TODO make human readable error visible to the user with error.getMessage()
             }
-        });
+        };
+        myRef.addChildEventListener(adapterChildEventListener);
     }
 
     @Override
@@ -202,6 +203,11 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
         @Override
         public String toString() {
             return super.toString() + " '" + deviceName.getText() + "'";
+        }
+    }
+    public void removeListener() {
+        if (adapterChildEventListener != null) {
+            mDatabaseReference.removeEventListener(mChildEventListener);
         }
     }
 }
