@@ -187,7 +187,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
         this.itemClick = itemClick;
     }
 
-    public class DeviceListViewHolder extends RecyclerView.ViewHolder {
+    public class DeviceListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final View mView;
         public final ImageView deviceIcon;
         public final TextView deviceName;
@@ -203,6 +203,15 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
         @Override
         public String toString() {
             return super.toString() + " '" + deviceName.getText() + "'";
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (itemClick != null) {
+                itemClick.onItemClicked(getAdapterPosition());
+                //http://stackoverflow.com/questions/32323548/passing-data-from-on-click-function-of-my-recycler-adaptor
+                //http://stackoverflow.com/a/27886776
+            }
         }
     }
     public void removeListener() {
