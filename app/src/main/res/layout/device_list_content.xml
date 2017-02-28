@@ -18,6 +18,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:paddingTop="@dimen/text_margin"
+            android:paddingLeft="@dimen/text_margin"
             tools:src="@drawable/ic_tablet_black_24dp"/>
             <!-- android:contentDescription is set programmatically when binding the viewholder-->
 
