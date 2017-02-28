@@ -139,7 +139,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
                 //TODO make human readable error visible to the user with error.getMessage()
             }
         };
-        myRef.addChildEventListener(adapterChildEventListener);
+        databaseReference.addChildEventListener(adapterChildEventListener);
     }
 
     @Override
@@ -207,7 +207,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
     }
     public void removeListener() {
         if (adapterChildEventListener != null) {
-            mDatabaseReference.removeEventListener(mChildEventListener);
+            databaseReference.removeEventListener(adapterChildEventListener);
         }
     }
 }
