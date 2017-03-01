@@ -195,6 +195,8 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
 
         public DeviceListViewHolder(View view) {
             super(view);
+            view.setClickable(true);
+            view.setOnClickListener(this);
             mView = view;
             deviceIcon = (ImageView) view.findViewById(R.id.device_icon);
             deviceName = (TextView) view.findViewById(R.id.device_name);

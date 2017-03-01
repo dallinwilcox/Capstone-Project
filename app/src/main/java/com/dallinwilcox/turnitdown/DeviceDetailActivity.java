@@ -55,8 +55,8 @@ public class DeviceDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(Device.DEVICE_EXTRA,
-                    getIntent().getStringExtra(Device.DEVICE_EXTRA));
+            arguments.putParcelable(Device.DEVICE_EXTRA,
+                    getIntent().getParcelableExtra(Device.DEVICE_EXTRA));
             DeviceDetailFragment fragment = new DeviceDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()

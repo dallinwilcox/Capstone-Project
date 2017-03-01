@@ -148,11 +148,12 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.device_detail_container, fragment)
                     .commit();
-        } else {
-            Intent intent = new Intent(getApplicationContext(), DeviceDetailActivity.class);
-            intent.putExtra(Device.DEVICE_EXTRA, deviceListAdapter.get(position));
-            startActivity(intent);
+            return;
         }
+        //else if not tablet
+        Intent intent = new Intent(getApplicationContext(), DeviceDetailActivity.class);
+        intent.putExtra(Device.DEVICE_EXTRA, deviceListAdapter.get(position));
+        startActivity(intent);
     }
 
 }
