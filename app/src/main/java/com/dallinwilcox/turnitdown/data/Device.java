@@ -2,6 +2,7 @@ package com.dallinwilcox.turnitdown.data;
 
 import android.databinding.BaseObservable;
 import android.databinding.Observable;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -33,9 +34,13 @@ public class Device extends BaseObservable implements Parcelable{
     String manufacturer;
     int deviceType;
     int mediaVolume;
+    int mediaMaxVolume;
     int alarmVolume;
+    int alarmMaxVolume;
     int ringVolume;
+    int ringMaxVolume;
     int notificationVolume;
+    int notificationMaxVolume;
 
     //Default constructor w/ no arguments for FireBase Database
     public Device()
@@ -49,6 +54,7 @@ public class Device extends BaseObservable implements Parcelable{
         this.model = Build.MODEL;
         this.manufacturer = Build.MANUFACTURER;
         this.deviceType = PHONE;
+
     }
 
     protected Device(Parcel in) {
@@ -59,9 +65,13 @@ public class Device extends BaseObservable implements Parcelable{
         manufacturer = in.readString();
         deviceType = in.readInt();
         mediaVolume = in.readInt();
+        mediaMaxVolume = in.readInt();
         alarmVolume = in.readInt();
+        alarmMaxVolume = in.readInt();
         ringVolume = in.readInt();
+        ringMaxVolume = in.readInt();
         notificationVolume = in.readInt();
+        notificationMaxVolume = in.readInt();
     }
 
     @Override
@@ -73,9 +83,13 @@ public class Device extends BaseObservable implements Parcelable{
         dest.writeString(manufacturer);
         dest.writeInt(deviceType);
         dest.writeInt(mediaVolume);
+        dest.writeInt(mediaMaxVolume);
         dest.writeInt(alarmVolume);
+        dest.writeInt(alarmMaxVolume);
         dest.writeInt(ringVolume);
+        dest.writeInt(ringMaxVolume);
         dest.writeInt(notificationVolume);
+        dest.writeInt(notificationMaxVolume);
     }
 
     @Override
@@ -149,12 +163,29 @@ public class Device extends BaseObservable implements Parcelable{
         this.mediaVolume = mediaVolume;
     }
 
+
+    public int getMediaMaxVolume() {
+        return mediaMaxVolume;
+    }
+
+    public void setMediaMaxVolume(int mediaMaxVolume) {
+        this.mediaMaxVolume = mediaMaxVolume;
+    }
+
     public int getAlarmVolume() {
         return alarmVolume;
     }
 
     public void setAlarmVolume(int alarmVolume) {
         this.alarmVolume = alarmVolume;
+    }
+
+    public int getAlarmMaxVolume() {
+        return alarmMaxVolume;
+    }
+
+    public void setAlarmMaxVolume(int alarmMaxVolume) {
+        this.alarmMaxVolume = alarmMaxVolume;
     }
 
     public int getRingVolume() {
@@ -165,12 +196,28 @@ public class Device extends BaseObservable implements Parcelable{
         this.ringVolume = ringVolume;
     }
 
+    public int getRingMaxVolume() {
+        return ringMaxVolume;
+    }
+
+    public void setRingMaxVolume(int ringMaxVolume) {
+        this.ringMaxVolume = ringMaxVolume;
+    }
+
     public int getNotificationVolume() {
         return notificationVolume;
     }
 
     public void setNotificationVolume(int notificationVolume) {
         this.notificationVolume = notificationVolume;
+    }
+
+    public int getNotificationMaxVolume() {
+        return notificationMaxVolume;
+    }
+
+    public void setNotificationMaxVolume(int notificationMaxVolume) {
+        this.notificationMaxVolume = notificationMaxVolume;
     }
 
     @Override
