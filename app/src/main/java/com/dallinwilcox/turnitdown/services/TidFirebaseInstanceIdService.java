@@ -1,7 +1,11 @@
 package com.dallinwilcox.turnitdown.services;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.dallinwilcox.turnitdown.inf.DeviceCache;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
@@ -20,7 +24,18 @@ public class TidFirebaseInstanceIdService extends FirebaseInstanceIdService {
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
-        //TODO implement sending updated token to server
-        //sendRegistrationToServer(refreshedToken);
+        updateDeviceId(refreshedToken);
+    }
+
+    private void updateDeviceId(String refreshedToken) {
+        Context appContext = getApplicationContext();
+        String userId = DeviceCache.getUserId(appContext);
+        String deviceId = DeviceCache.getDeviceId(appContext);
+        if ("" != userId && "" != deviceId)
+        {
+            DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                    .getReference("devices/" + userId + "/" + deviceId + "/id");
+            dbRef.setValue(refreshedToken);
+        }
     }
 }

@@ -9,6 +9,8 @@ import android.util.Log;
 
 import com.dallinwilcox.turnitdown.data.Device;
 import com.dallinwilcox.turnitdown.databinding.ActivityDevicePropertiesBinding;
+import com.dallinwilcox.turnitdown.inf.DeviceCache;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 //referenced https://developer.android.com/topic/libraries/data-binding/
@@ -28,6 +30,7 @@ public class DevicePropertiesActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        //TODO move to the fragment so it handles UI updates appropriately
         updateDB();
         super.onPause();
     }
@@ -40,8 +43,17 @@ public class DevicePropertiesActivity extends AppCompatActivity {
 
     private void updateDB()
     {
-        FirebaseDatabase.getInstance().getReference("devices/" + device.getUser() + "/" + device.getId()).setValue(device);
+        Context appContext = getApplicationContext();
+        String deviceId = DeviceCache.getDeviceId(appContext);
+        //guard clause to handle first write
+        if ( deviceId == "") {
+
+            DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("devices/" + device.getUser());
+            deviceId = dbRef.push().getKey();
+            DeviceCache.writeUserId(appContext, device.getUser());
+            DeviceCache.writeDeviceId(appContext, deviceId);
+            return;
+        }
+        FirebaseDatabase.getInstance().getReference("devices/" + device.getUser() + "/" + deviceId).setValue(device);
     }
-
-
 }

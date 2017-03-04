@@ -16,4 +16,6 @@ public class DeviceAttributes {
         //returns value defined in isTablet boolean, which returns true if resolved from sw-600dp
         return context.getResources().getBoolean(R.bool.isTablet);
     }
+
+
 }

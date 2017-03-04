@@ -17,7 +17,6 @@ import com.dallinwilcox.turnitdown.data.Device;
 import com.dallinwilcox.turnitdown.inf.DeviceAttributes;
 import com.dallinwilcox.turnitdown.inf.OnItemClick;
 import com.firebase.ui.auth.IdpResponse;
-import com.firebase.ui.auth.ui.User;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
@@ -69,13 +68,14 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
             @Override
             public void onClick(View view) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                FirebaseInstanceId fbInstanceId = FirebaseInstanceId.getInstance();
+                String token = FirebaseInstanceId.getInstance().getToken();
+                //consider implications of null token, or if even possible...
                 if (null != user && null != user.getUid()) {
+                    Context appContext = DeviceListActivity.this.getApplicationContext();
                     Intent enrollDeviceIntent =
                             DevicePropertiesActivity.createIntent(
-                                    DeviceListActivity.this.getApplicationContext(),
-                                    //TODO handle null deviceToken
-                                    new Device(fbInstanceId.getToken(), user.getUid()));
+                                    appContext,
+                                    new Device(token, user.getUid()));
                     DeviceListActivity.this.startActivity(enrollDeviceIntent);
                 } else {
                     Snackbar.make(view, getString(R.string.error_adding_device), Snackbar.LENGTH_LONG)
