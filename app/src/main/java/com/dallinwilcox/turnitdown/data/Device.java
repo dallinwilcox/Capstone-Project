@@ -220,6 +220,18 @@ public class Device extends BaseObservable implements Parcelable{
         this.notificationMaxVolume = notificationMaxVolume;
     }
 
+    public void setVolumes(DeviceVolumes deviceVolumes)
+    {
+        this.mediaVolume = deviceVolumes.mediaVolume;
+        this.mediaMaxVolume = deviceVolumes.mediaMaxVolume;
+        this.alarmVolume = deviceVolumes.alarmVolume;
+        this.alarmMaxVolume = deviceVolumes.alarmMaxVolume;
+        this.ringVolume = deviceVolumes.ringVolume;
+        this.ringMaxVolume = deviceVolumes.ringMaxVolume;
+        this.notificationVolume = deviceVolumes.notificationVolume;
+        this.notificationMaxVolume = deviceVolumes.notificationMaxVolume;
+    }
+
     @Override
     public String toString() {
         return "Device{" +
