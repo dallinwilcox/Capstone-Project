@@ -5,8 +5,15 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.util.Log;
 
+import com.dallinwilcox.turnitdown.data.DeviceVolumes;
+import com.dallinwilcox.turnitdown.inf.DeviceAttributes;
+import com.dallinwilcox.turnitdown.inf.DeviceCache;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import java.util.Map;
 
 /**
  * Created by dcwilcox on 2/25/2017.
@@ -32,14 +39,21 @@ public class TidFirebaseMessagingService extends FirebaseMessagingService {
         else //remote is requesting current audio settings for this device
         {
             AudioManager audioMgr = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-            int musicVol = audioMgr.getStreamVolume(AudioManager.STREAM_MUSIC);
-            int alarmVol = audioMgr.getStreamVolume(AudioManager.STREAM_ALARM);
-            int ringVol = audioMgr.getStreamVolume(AudioManager.STREAM_RING);
-            int notificationVol = audioMgr.getStreamVolume(AudioManager.STREAM_NOTIFICATION);
+            DeviceVolumes volumes = DeviceAttributes.getVolumes(audioMgr);
+            updateDeviceVolumesInDatabase(volumes.toMap());
 
         }
     }
-
+    private void updateDeviceVolumesInDatabase(Map<String,Object> volumes) {
+        Context appContext = getApplicationContext();
+        String userId = DeviceCache.getUserId(appContext);
+        String deviceId = DeviceCache.getDeviceId(appContext);
+        if ("" != userId && "" != deviceId) {
+            DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                    .getReference("devices/" + userId + "/" + deviceId + "/id");
+            dbRef.updateChildren(volumes);
+        }
+    }
     @Override
     public void onDeletedMessages() {
         super.onDeletedMessages();
