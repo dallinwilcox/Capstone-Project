@@ -26,14 +26,13 @@ public class TidFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-
+            //TODO handle new volume values sent to this device
 
         }
         else //remote is requesting current audio settings for this device
