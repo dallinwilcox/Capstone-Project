@@ -119,9 +119,8 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
         }
         else
         {
-            fab.setVisibility(View.INVISIBLE);
+            fab.setVisibility(View.GONE);
         }
-
     }
 
     public static Intent createIntent (Context context, IdpResponse response)
@@ -143,6 +142,7 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
         int id = item.getItemId();
         if (id == R.id.action_signOut) {
             FirebaseAuth.getInstance().signOut();
+            this.startActivity(new Intent (getApplicationContext(), AuthActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
