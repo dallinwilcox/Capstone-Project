@@ -113,12 +113,13 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
                         gaa.showErrorDialogFragment(this, gpsStatus, 42);
         }
         //Handle when device is already enrolled, don't show FAB which is used to enroll
-        if ("" == DeviceCache.getDeviceId(getApplicationContext())){
-            fab.setVisibility(View.INVISIBLE);
+        String deviceId = DeviceCache.getDeviceId(getApplicationContext());
+        if ("" == deviceId){
+            fab.setVisibility(View.VISIBLE);
         }
         else
         {
-            fab.setVisibility(View.VISIBLE);
+            fab.setVisibility(View.INVISIBLE);
         }
 
     }
