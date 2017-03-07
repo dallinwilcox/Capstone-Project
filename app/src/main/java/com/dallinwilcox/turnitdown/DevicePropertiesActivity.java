@@ -30,7 +30,6 @@ public class DevicePropertiesActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        //TODO move to the fragment so it handles UI updates appropriately
         updateDB();
         super.onPause();
     }
@@ -47,7 +46,6 @@ public class DevicePropertiesActivity extends AppCompatActivity {
         String deviceId = DeviceCache.getDeviceId(appContext);
         //guard clause to handle first write
         if ( deviceId == "") {
-
             DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("devices/" + device.getUser());
             deviceId = dbRef.push().getKey();
             DeviceCache.writeUserId(appContext, device.getUser());

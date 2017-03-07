@@ -33,6 +33,7 @@ public class TidFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
             //TODO handle new volume values sent to this device
+            //TODO handle device deleted by removing shared preferences
 
         }
         else //remote is requesting current audio settings for this device
@@ -52,6 +53,11 @@ public class TidFirebaseMessagingService extends FirebaseMessagingService {
                     .getReference("devices/" + userId + "/" + deviceId + "/id");
             dbRef.updateChildren(volumes);
         }
+    }
+    private void onDeviceRemoved()
+    {
+        Context appContext = getApplicationContext();
+
     }
     @Override
     public void onDeletedMessages() {

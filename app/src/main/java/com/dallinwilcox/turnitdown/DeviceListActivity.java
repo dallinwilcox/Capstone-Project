@@ -15,6 +15,7 @@ import android.view.View;
 
 import com.dallinwilcox.turnitdown.data.Device;
 import com.dallinwilcox.turnitdown.inf.DeviceAttributes;
+import com.dallinwilcox.turnitdown.inf.DeviceCache;
 import com.dallinwilcox.turnitdown.inf.OnItemClick;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.common.ConnectionResult;
@@ -83,7 +84,6 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
                 }
             }
         });
-
         assert deviceList != null;
         deviceListAdapter = new DeviceListAdapter();
         deviceList.setAdapter(deviceListAdapter);
@@ -112,6 +112,15 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
         if (ConnectionResult.SUCCESS != gpsStatus && gaa.isUserResolvableError(gpsStatus)){
                         gaa.showErrorDialogFragment(this, gpsStatus, 42);
         }
+        //Handle when device is already enrolled, don't show FAB which is used to enroll
+        if ("" == DeviceCache.getDeviceId(getApplicationContext())){
+            fab.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            fab.setVisibility(View.VISIBLE);
+        }
+
     }
 
     public static Intent createIntent (Context context, IdpResponse response)
