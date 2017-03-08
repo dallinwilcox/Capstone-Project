@@ -50,33 +50,38 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
     private boolean isTablet;
     private final String TAG = "DeviceListActivity";
     private DeviceListAdapter deviceListAdapter;
-    DatabaseReference dbRef;
-    DatabaseReference deviceRef;
-
+    private String userId = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_list);
         ButterKnife.bind(this);
 
-        dbRef = FirebaseDatabase.getInstance().getReference();
-        deviceRef = dbRef.child("device");
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
         //ensure Google APIs are available for FCM
         GoogleApiAvailability.getInstance().makeGooglePlayServicesAvailable(this);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (null != user && null != user.getUid()) {
+            userId = user.getUid();
+        }
+        else//not logged in
+        {
+            //TODO fix loop on finishing auth activity, maybe by making auth the default activity.
+            startActivity( new Intent (getApplicationContext(), AuthActivity.class));
+        }
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
                 String token = FirebaseInstanceId.getInstance().getToken();
                 //consider implications of null token, or if even possible...
-                if (null != user && null != user.getUid()) {
+                if (null != userId && "" != userId) {
                     Context appContext = DeviceListActivity.this.getApplicationContext();
                     Intent enrollDeviceIntent =
                             DevicePropertiesActivity.createIntent(
                                     appContext,
-                                    new Device(token, user.getUid()));
+                                    new Device(token, userId));
                     DeviceListActivity.this.startActivity(enrollDeviceIntent);
                 } else {
                     Snackbar.make(view, getString(R.string.error_adding_device), Snackbar.LENGTH_LONG)
@@ -85,7 +90,7 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
             }
         });
         assert deviceList != null;
-        deviceListAdapter = new DeviceListAdapter();
+        deviceListAdapter = new DeviceListAdapter(userId);
         deviceList.setAdapter(deviceListAdapter);
         deviceListAdapter.setItemClick(this);
         isTablet = DeviceAttributes.isTablet(getApplicationContext());

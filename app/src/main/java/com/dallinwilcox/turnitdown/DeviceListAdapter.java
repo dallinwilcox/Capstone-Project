@@ -36,13 +36,13 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
     private OnItemClick itemClick;
     private DatabaseReference databaseReference;
 
-    public DeviceListAdapter() {
+    public DeviceListAdapter(String userId) {
         //Init DB and reference
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         //TODO Consider passing in userId
         //TODO Consider referencing a constant for path for re-use and better maintenance
         //TODO handle null userId in case of user logged out.
-        databaseReference = database.getReference("devices/"+ FirebaseAuth.getInstance().getCurrentUser().getUid());
+        databaseReference = database.getReference("devices/"+ userId +"/");
         adapterDeviceList = new ArrayList<>();
         deviceIndexList = new ArrayList<>();
         // Read from the database with a listener
