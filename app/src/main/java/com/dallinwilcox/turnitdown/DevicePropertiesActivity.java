@@ -47,7 +47,10 @@ public class DevicePropertiesActivity extends AppCompatActivity {
         //guard clause to handle first write
         if ( deviceId == "") {
             DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("devices/" + device.getUser());
-            deviceId = dbRef.push().getKey();
+
+            DatabaseReference newDeviceRef = dbRef.push();
+            deviceId= newDeviceRef.getKey();
+            newDeviceRef.setValue(device);
             DeviceCache.writeUserId(appContext, device.getUser());
             DeviceCache.writeDeviceId(appContext, deviceId);
             return;
