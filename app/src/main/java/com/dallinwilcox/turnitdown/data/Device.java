@@ -16,13 +16,11 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * Created by dcwilcox on 1/31/2017.
- * Referenced https://developer.android.com/studio/write/annotations.html#enum-annotations
+ * Referenced
+ * https://developer.android.com/studio/write/annotations.html#enum-annotations
+ * https://halfthought.wordpress.com/2016/03/23/2-way-data-binding-on-android/
  */
 
-//see https://halfthought.wordpress.com/2016/03/23/2-way-data-binding-on-android/#comment-143
-@InverseBindingMethods({
-        @InverseBindingMethod(type = Spinner.class, attribute = "android:selectedItemPosition", method = "deviceType"),
-})
 public class Device extends BaseObservable implements Parcelable{
 
     public static final String DEVICE_EXTRA = "deviceExtra";
