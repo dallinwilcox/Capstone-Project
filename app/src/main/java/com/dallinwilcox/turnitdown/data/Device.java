@@ -1,12 +1,16 @@
 package com.dallinwilcox.turnitdown.data;
 
 import android.databinding.BaseObservable;
+import android.databinding.BindingAdapter;
+import android.databinding.InverseBindingMethod;
+import android.databinding.InverseBindingMethods;
 import android.databinding.Observable;
-import android.media.AudioManager;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
+import android.widget.Spinner;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -15,6 +19,10 @@ import java.lang.annotation.RetentionPolicy;
  * Referenced https://developer.android.com/studio/write/annotations.html#enum-annotations
  */
 
+//see https://halfthought.wordpress.com/2016/03/23/2-way-data-binding-on-android/#comment-143
+@InverseBindingMethods({
+        @InverseBindingMethod(type = Spinner.class, attribute = "android:selectedItemPosition", method = "deviceType"),
+})
 public class Device extends BaseObservable implements Parcelable{
 
     public static final String DEVICE_EXTRA = "deviceExtra";

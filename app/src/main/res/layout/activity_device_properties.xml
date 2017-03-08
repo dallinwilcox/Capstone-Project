@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="text"
-            android:text="@{device.name}"
+            android:text="@={device.name}"
             tools:text="Device Name"
             tools:layout_constraintTop_creator="1"
             tools:layout_constraintBottom_creator="1"
@@ -71,7 +71,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@+id/device_model_label"
             app:layout_constraintTop_toTopOf="parent"
-            app:selection="@{device.deviceType}"/>
+            android:selectedItemPosition="@={device.deviceType}"/>
 
         <TextView
             android:id="@+id/device_model_label"
