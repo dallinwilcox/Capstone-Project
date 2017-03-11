@@ -2,6 +2,7 @@ package com.dallinwilcox.turnitdown;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.dallinwilcox.turnitdown.data.Device;
+import com.dallinwilcox.turnitdown.data.DeviceVolumes;
 import com.dallinwilcox.turnitdown.inf.DeviceAttributes;
 import com.dallinwilcox.turnitdown.inf.DeviceCache;
 import com.dallinwilcox.turnitdown.inf.OnItemClick;
@@ -76,10 +78,14 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
                 //consider implications of null token, or if even possible...
                 if (null != userId && "" != userId) {
                     Context appContext = DeviceListActivity.this.getApplicationContext();
+                    Device thisDevice = new Device(token, userId);
+                    //prepopulate the new device with current volume levels to capture maxLevels
+                    AudioManager audioMgr =
+                            (AudioManager) appContext.getSystemService(Context.AUDIO_SERVICE);
+                    thisDevice.setVolumes(DeviceAttributes.getVolumes(audioMgr));
                     Intent enrollDeviceIntent =
                             DevicePropertiesActivity.createIntent(
-                                    appContext,
-                                    new Device(token, userId));
+                                    appContext, thisDevice);
                     DeviceListActivity.this.startActivity(enrollDeviceIntent);
                 } else {
                     Snackbar.make(view, getString(R.string.error_adding_device), Snackbar.LENGTH_LONG)
