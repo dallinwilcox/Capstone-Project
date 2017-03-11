@@ -1,6 +1,7 @@
 package com.dallinwilcox.turnitdown;
 
 import android.app.Activity;
+import android.databinding.DataBindingUtil;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dallinwilcox.turnitdown.data.Device;
+import com.dallinwilcox.turnitdown.databinding.DeviceDetailBinding;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * A fragment representing a single Device detail screen.
@@ -23,6 +27,7 @@ public class DeviceDetailFragment extends Fragment {
      * The dummy content this fragment is presenting.
      */
     private Device device;
+    private DatabaseReference dbRef;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -39,7 +44,7 @@ public class DeviceDetailFragment extends Fragment {
             throw new IllegalArgumentException("Must pass Device object with key DEVICE_EXTRA");
         }
         device = getArguments().getParcelable(Device.DEVICE_EXTRA);
-
+        dbRef = FirebaseDatabase.getInstance().getReference("devices/" + device.getUser() + "/" + device.getId());
         Activity activity = this.getActivity();
         CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
         if (appBarLayout != null) {
@@ -47,16 +52,13 @@ public class DeviceDetailFragment extends Fragment {
         }
     }
 
+    //referenced http://stackoverflow.com/a/34719627/2169923
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.device_detail, container, false);
-
-        // Show the dummy content as text in a TextView.
-        if (null != device) {
-            ((TextView) rootView.findViewById(R.id.device_detail)).setText(device.getName());
-        }
-
+        DeviceDetailBinding binding = DataBindingUtil.inflate(inflater, R.layout.device_detail, container, false);
+        View rootView = binding.getRoot();
+        binding.setDevice(device);
         return rootView;
     }
 }
