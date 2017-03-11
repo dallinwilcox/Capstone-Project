@@ -36,7 +36,8 @@ public class AuthActivity extends AppCompatActivity {
         super.onStart();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (null != auth.getCurrentUser()) {
-            // already signed in
+            startActivity(DeviceListActivity.createIntent(this.getApplicationContext()));
+            finish();
         } else {
             startActivityForResult(
                     AuthUI.getInstance()
@@ -47,7 +48,6 @@ public class AuthActivity extends AppCompatActivity {
                             .build(),
                     RC_SIGN_IN);
         }
-
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -58,7 +58,7 @@ public class AuthActivity extends AppCompatActivity {
 
             // Successfully signed in
             if (resultCode == ResultCodes.OK) {
-                startActivity(DeviceListActivity.createIntent(this, response));
+                startActivity(DeviceListActivity.createIntent(this.getApplicationContext()));
                 finish();
                 return;
             } else {
