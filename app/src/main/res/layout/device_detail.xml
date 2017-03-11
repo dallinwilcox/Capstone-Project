@@ -1,91 +1,110 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<!-- referenced https://developer.android.com/studio/write/vector-asset-studio.htm -->
-    <ImageView
-        android:id="@+id/media_volume_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_volume_up_black_24dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:padding="@dimen/general_padding"/>
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <SeekBar
-        android:id="@+id/media_volume_seekBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/alarm_volume_image"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/media_volume_image"
-        android:padding="@dimen/general_padding"/>
+    <data>
 
-    <ImageView
-        android:id="@+id/alarm_volume_image"
-        android:layout_below="@id/media_volume_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_alarm_black_24dp"
-        android:padding="@dimen/general_padding" />
+        <variable
+            name="device"
+            type="com.dallinwilcox.turnitdown.data.Device" />
+    </data>
 
-    <SeekBar
-        android:id="@+id/alarm_volume_seekBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/ring_volume_seekBar"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/alarm_volume_image"
-        android:padding="@dimen/general_padding" />
-
-    <ImageView
-        android:id="@+id/ring_volume_image"
-        android:layout_below="@id/alarm_volume_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_ring_volume_black_24dp"
-        android:padding="@dimen/general_padding" />
-
-    <SeekBar
-        android:id="@+id/ring_volume_seekBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/alarm_volume_image"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/notification_image"
-        android:layout_toEndOf="@+id/alarm_volume_image"
-        android:padding="@dimen/general_padding" />
-
-    <ImageView
-        android:id="@+id/notification_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_notifications_black_24dp"
-        android:layout_below="@+id/ring_volume_image"
-        android:layout_alignParentStart="true"
-        android:padding="@dimen/general_padding" />
-
-    <SeekBar
-        android:id="@+id/notification_seekBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ring_volume_image"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/ring_volume_image"
-        android:padding="@dimen/general_padding" />
-
-    <TextView
-        android:id="@+id/device_detail"
-        style="?android:attr/textAppearanceLarge"
-        tools:context="com.dallinwilcox.turnitdown.DeviceDetailFragment"
+    <RelativeLayout
+        android:id="@+id/main_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="43dp"
-        android:layout_marginTop="226dp"
-        android:padding="16dp"
-        android:textIsSelectable="true" />
-</RelativeLayout>
+        android:layout_height="match_parent">
+        <!-- referenced https://developer.android.com/studio/write/vector-asset-studio.htm -->
+        <ImageView
+            android:id="@+id/media_volume_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:padding="@dimen/general_padding"
+            app:srcCompat="@drawable/ic_volume_up_black_24dp" />
+
+        <SeekBar
+            android:id="@+id/media_volume_seekBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/alarm_volume_image"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/media_volume_image"
+            android:padding="@dimen/general_padding"
+            android:progress="@={device.mediaVolume}"
+            android:max="@{device.mediaMaxVolume}"/>
+
+        <ImageView
+            android:id="@+id/alarm_volume_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/media_volume_image"
+            android:padding="@dimen/general_padding"
+            app:srcCompat="@drawable/ic_alarm_black_24dp" />
+
+        <SeekBar
+            android:id="@+id/alarm_volume_seekBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/ring_volume_seekBar"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/alarm_volume_image"
+            android:padding="@dimen/general_padding"
+            android:progress="@={device.alarmVolume}"
+            android:max="@{device.alarmMaxVolume}"/>
+
+        <ImageView
+            android:id="@+id/ring_volume_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/alarm_volume_image"
+            android:padding="@dimen/general_padding"
+            app:srcCompat="@drawable/ic_ring_volume_black_24dp" />
+
+        <SeekBar
+            android:id="@+id/ring_volume_seekBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/notification_image"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/alarm_volume_image"
+            android:layout_toEndOf="@+id/alarm_volume_image"
+            android:padding="@dimen/general_padding"
+            android:progress="@={device.ringVolume}"
+            android:max="@{device.ringMaxVolume}"/>
+
+        <ImageView
+            android:id="@+id/notification_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ring_volume_image"
+            android:padding="@dimen/general_padding"
+            app:srcCompat="@drawable/ic_notifications_black_24dp" />
+
+        <SeekBar
+            android:id="@+id/notification_seekBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/ring_volume_image"
+            android:layout_toEndOf="@+id/ring_volume_image"
+            android:padding="@dimen/general_padding"
+            android:progress="@={device.notificationVolume}"
+            android:max="@{device.notificationMaxVolume}"/>
+
+        <TextView
+            android:id="@+id/device_detail"
+            style="?android:attr/textAppearanceLarge"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="43dp"
+            android:layout_marginTop="226dp"
+            android:padding="16dp"
+            android:textIsSelectable="true"
+            tools:context="com.dallinwilcox.turnitdown.DeviceDetailFragment" />
+    </RelativeLayout>
+</layout>
