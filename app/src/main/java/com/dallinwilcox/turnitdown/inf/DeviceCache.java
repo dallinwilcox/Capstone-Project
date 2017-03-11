@@ -36,9 +36,16 @@ public class DeviceCache {
         editor.putString(USER_ID, userId);
         editor.commit();
     }
-    //used to unregister this device so enroll options show up again
+
     public static void wipeCache (Context context)
     {
         context.getSharedPreferences(DEVICE_CACHE, Context.MODE_PRIVATE).edit().clear().commit();
+    }
+
+    //used to unregister this device so enroll options show up again
+    public static void removeDevice(Context context) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(DEVICE_CACHE, Context.MODE_PRIVATE).edit();
+        editor.remove(DEVICE_ID);
+        editor.commit();
     }
 }

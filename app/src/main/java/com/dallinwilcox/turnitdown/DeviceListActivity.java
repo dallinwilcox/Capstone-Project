@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,16 +14,14 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.dallinwilcox.turnitdown.data.Device;
-import com.dallinwilcox.turnitdown.data.DeviceVolumes;
 import com.dallinwilcox.turnitdown.inf.DeviceAttributes;
 import com.dallinwilcox.turnitdown.inf.DeviceCache;
 import com.dallinwilcox.turnitdown.inf.OnItemClick;
+import com.dallinwilcox.turnitdown.inf.VolumeHelper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import butterknife.BindView;
@@ -82,7 +79,7 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
                     //prepopulate the new device with current volume levels to capture maxLevels
                     AudioManager audioMgr =
                             (AudioManager) appContext.getSystemService(Context.AUDIO_SERVICE);
-                    thisDevice.setVolumes(DeviceAttributes.getVolumes(audioMgr));
+                    thisDevice.setVolumes(VolumeHelper.getVolumes(audioMgr));
                     Intent enrollDeviceIntent =
                             DevicePropertiesActivity.createIntent(
                                     appContext, thisDevice);
