@@ -17,7 +17,6 @@ import com.dallinwilcox.turnitdown.data.Device;
 import com.dallinwilcox.turnitdown.inf.DeviceAttributes;
 import com.dallinwilcox.turnitdown.inf.DeviceCache;
 import com.dallinwilcox.turnitdown.inf.OnItemClick;
-import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,7 +42,6 @@ import butterknife.ButterKnife;
  */
 
 public class DeviceListActivity extends AppCompatActivity implements OnItemClick {
-    public static final String IDP_RESPONSE = "IdpResponse";
     @BindView(R.id.device_list) RecyclerView deviceList;
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -128,9 +126,9 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
         }
     }
 
-    public static Intent createIntent (Context context, IdpResponse response)
+    public static Intent createIntent (Context context)
     {
-        return new Intent (context, DeviceListActivity.class).putExtra(IDP_RESPONSE, response);
+        return new Intent (context, DeviceListActivity.class);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
