@@ -237,6 +237,15 @@ public class Device extends BaseObservable implements Parcelable{
         this.notificationVolume = deviceVolumes.notificationVolume;
         this.notificationMaxVolume = deviceVolumes.notificationMaxVolume;
     }
+    public DeviceVolumes getVolumes()
+    {
+        return new DeviceVolumes(
+                mediaVolume, mediaMaxVolume,
+                alarmVolume, alarmMaxVolume,
+                ringVolume, ringMaxVolume,
+                notificationVolume, notificationMaxVolume
+                );
+    }
 
     @Override
     public String toString() {

@@ -19,6 +19,7 @@ import java.util.Map;
  */
 
 public class TidFirebaseMessagingService extends FirebaseMessagingService {
+    public static final String VOLUME_REQUEST = "volumeRequest";
     private static final String TAG = "TIDFBMessagingService";
 
     @Override
@@ -44,8 +45,9 @@ public class TidFirebaseMessagingService extends FirebaseMessagingService {
         if (data.containsKey(DeviceVolumes.MEDIA_VOLUME)) {
             DeviceVolumes volumes = new DeviceVolumes(data);
             VolumeHelper.setVolumes(audioMgr, volumes);
-        } else //remote is requesting current audio settings for this device
-        {
+        }
+        //remote is requesting current volumes for this device
+        else if (data.containsKey(VOLUME_REQUEST)) {
             DeviceVolumes volumes = VolumeHelper.getVolumes(audioMgr);
             updateDeviceVolumesInDatabase(volumes.toMap());
         }
@@ -57,7 +59,7 @@ public class TidFirebaseMessagingService extends FirebaseMessagingService {
         String deviceId = DeviceCache.getDeviceId(appContext);
         if (!"".equals(userId) && !"".equals(deviceId)) {
             DatabaseReference dbRef = FirebaseDatabase.getInstance()
-                    .getReference("devices/" + userId + "/" + deviceId + "/id");
+                    .getReference("devices/" + userId + "/" + deviceId);
             dbRef.updateChildren(volumes);
         }
     }

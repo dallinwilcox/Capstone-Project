@@ -1,19 +1,25 @@
 package com.dallinwilcox.turnitdown;
 
 import android.app.Activity;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.dallinwilcox.turnitdown.data.Device;
 import com.dallinwilcox.turnitdown.databinding.DeviceDetailBinding;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Map;
 
 /**
  * A fragment representing a single Device detail screen.
@@ -28,6 +34,8 @@ public class DeviceDetailFragment extends Fragment {
      */
     private Device device;
     private DatabaseReference dbRef;
+    private static final String TAG = "DeviceDetailFragment";
+    private DeviceDetailBinding binding;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -45,6 +53,23 @@ public class DeviceDetailFragment extends Fragment {
         }
         device = getArguments().getParcelable(Device.DEVICE_EXTRA);
         dbRef = FirebaseDatabase.getInstance().getReference("devices/" + device.getUser() + "/" + device.getId());
+        ValueEventListener volumeListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                device = dataSnapshot.getValue(Device.class);
+                //not sure if need to call binding.setDevice(device) or binding.notifyChange()
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                //TODO consider displaying error to the user.
+            }
+        };
+        dbRef.addValueEventListener(volumeListener);
+
         Activity activity = this.getActivity();
         CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
         if (appBarLayout != null) {
@@ -56,9 +81,22 @@ public class DeviceDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        DeviceDetailBinding binding = DataBindingUtil.inflate(inflater, R.layout.device_detail, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.device_detail, container, false);
         View rootView = binding.getRoot();
         binding.setDevice(device);
         return rootView;
     }
+
+    @Override
+    public void onPause() {
+        sendNotification(device.getVolumes().toMap());
+        super.onPause();
+    }
+
+    private void sendNotification(Map<String, Object> data) {
+            DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                    .getReference("/notify/" + device.getId());
+            dbRef.setValue(data);
+    }
+
 }

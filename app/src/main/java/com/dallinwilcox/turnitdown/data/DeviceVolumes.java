@@ -40,7 +40,7 @@ public class DeviceVolumes {
         this.notificationMaxVolume = notificationMaxVolume;
     }
 
-    public Map<String, Object> toMap(){
+    public Map<String, Object> toMap() {
         HashMap<String, Object> map = new HashMap<>();
         map.put(MEDIA_VOLUME, mediaVolume);
         map.put(MEDIA_MAX_VOLUME, mediaMaxVolume);
@@ -52,8 +52,8 @@ public class DeviceVolumes {
         map.put(NOTIFICATION_MAX_VOLUME, notificationMaxVolume);
         return map;
     }
-    public DeviceVolumes (Map<String, String> volumes)
-    {
+
+    public DeviceVolumes(Map<String, String> volumes) {
         //if this were guaranteed API 24+, would consider using getOrDefault instead
         this.mediaVolume = translate(volumes.get(MEDIA_VOLUME));
         this.mediaMaxVolume = translate(volumes.get(MEDIA_MAX_VOLUME));
@@ -65,9 +65,10 @@ public class DeviceVolumes {
         this.notificationMaxVolume = translate(volumes.get(NOTIFICATION_MAX_VOLUME));
     }
 
-    private int translate (String string)
-    {
-        if (TextUtils.isEmpty(string)){ return 0;}
+    private int translate(String string) {
+        if (TextUtils.isEmpty(string)) {
+            return 0;
+        }
         int integer = 0;
         try {
             integer = Integer.parseInt(string);
