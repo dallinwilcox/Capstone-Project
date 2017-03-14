@@ -60,6 +60,7 @@ public class DeviceDetailFragment extends Fragment {
                 device = dataSnapshot.getValue(Device.class);
                 //not sure if need to call binding.setDevice(device) or binding.notifyChange()
             }
+
             //TODO clean up listener w/ fragment lifecycle
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -94,9 +95,10 @@ public class DeviceDetailFragment extends Fragment {
     }
 
     private void sendNotification(Map<String, Object> data) {
-            DatabaseReference dbRef = FirebaseDatabase.getInstance()
-                    .getReference("/notify/" + device.getId());
-            dbRef.setValue(data);
+        DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                .getReference("/notify/" + device.getId());
+        dbRef.setValue(data);
+        //TODO ensure permissions are set correctly
     }
 
 }
