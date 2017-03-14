@@ -60,7 +60,7 @@ public class DeviceDetailFragment extends Fragment {
                 device = dataSnapshot.getValue(Device.class);
                 //not sure if need to call binding.setDevice(device) or binding.notifyChange()
             }
-
+            //TODO clean up listener w/ fragment lifecycle
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
