@@ -17,6 +17,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Map;
@@ -30,12 +31,13 @@ import java.util.Map;
 public class DeviceDetailFragment extends Fragment {
 
     /**
-     * The dummy content this fragment is presenting.
+     * The device this fragment is presenting.
      */
     private Device device;
     private DatabaseReference dbRef;
     private static final String TAG = "DeviceDetailFragment";
     private DeviceDetailBinding binding;
+    private  ValueEventListener volumeListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -52,8 +54,9 @@ public class DeviceDetailFragment extends Fragment {
             throw new IllegalArgumentException("Must pass Device object with key DEVICE_EXTRA");
         }
         device = getArguments().getParcelable(Device.DEVICE_EXTRA);
-        dbRef = FirebaseDatabase.getInstance().getReference("devices/" + device.getUser() + "/" + device.getId());
-        ValueEventListener volumeListener = new ValueEventListener() {
+        dbRef = FirebaseDatabase.getInstance().getReference("devices/" + device.getUser());
+        Query query = dbRef.orderByChild("id").equalTo(device.getId());
+        volumeListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
@@ -69,7 +72,7 @@ public class DeviceDetailFragment extends Fragment {
                 //TODO consider displaying error to the user.
             }
         };
-        dbRef.addValueEventListener(volumeListener);
+        query.addValueEventListener(volumeListener);
 
         Activity activity = this.getActivity();
         CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
@@ -91,6 +94,10 @@ public class DeviceDetailFragment extends Fragment {
     @Override
     public void onPause() {
         sendNotification(device.getVolumes().toMap());
+        if(null != dbRef)
+        {
+            dbRef.removeEventListener(volumeListener);
+        }
         super.onPause();
     }
 
