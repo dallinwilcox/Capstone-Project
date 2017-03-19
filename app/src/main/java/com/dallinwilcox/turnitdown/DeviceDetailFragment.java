@@ -56,6 +56,7 @@ public class DeviceDetailFragment extends Fragment {
         device = getArguments().getParcelable(Device.DEVICE_EXTRA);
         dbRef = FirebaseDatabase.getInstance().getReference("devices/" + device.getUser());
         Query query = dbRef.orderByChild("id").equalTo(device.getId());
+        //TODO FIXME this query is returning user object instead of device object
         volumeListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
