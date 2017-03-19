@@ -61,6 +61,7 @@ public class DeviceDetailFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 device = dataSnapshot.getValue(Device.class);
+                Log.d(TAG, "Device updated in DB " + dataSnapshot.getKey() + device.toString() );
                 //not sure if need to call binding.setDevice(device) or binding.notifyChange()
             }
 
