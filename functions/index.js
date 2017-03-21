@@ -29,8 +29,8 @@ exports.sendDataNotification = functions.database.ref('/notify/{token}/{data}').
 
   console.log('new data:', payload, 'for token:', token);
 
-    // Send data to token.
-    return admin.messaging().sendToDevice(token, payload).then(response => {
+    // Send data to device represented by token, make sure all types are strings
+    return admin.messaging().sendToDevice(token, JSON.stringify(payload)).then(response => {
       // For each message check if there was an error.
       const tokensToRemove = [];
       response.results.forEach((result, index) => {
