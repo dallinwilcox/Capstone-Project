@@ -14,16 +14,23 @@ admin.initializeApp(functions.config().firebase);
 /**
  * Triggers when a device requests a notification.
  *
- * devices write to `/notify/{token}`.
- * device notification tokens are stored at `/devices/{userID}/{deviceId}/id`.
- */
+ * client app writes data to be sent to to `/notify/{token}/{data}`.
+  */
 exports.sendDataNotification = functions.database.ref('/notify/{token}/{data}').onWrite(event => {
   const token = event.params.token;
-  const data = event.params.data;
-  console.log('new data:', data, 'for token:', token);
+  const data = event.data.val();
+  if (!data) {
+    //message was removed from the database, so no-op
+    return;
+  }
+    // Notification details.
+    const payload = {};
+    payload.data = data;
+
+  console.log('new data:', payload, 'for token:', token);
 
     // Send data to token.
-    return admin.messaging().sendToDevice(token, data).then(response => {
+    return admin.messaging().sendToDevice(token, payload).then(response => {
       // For each message check if there was an error.
       const tokensToRemove = [];
       response.results.forEach((result, index) => {
