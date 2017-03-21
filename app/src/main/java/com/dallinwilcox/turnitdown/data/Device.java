@@ -1,15 +1,14 @@
 package com.dallinwilcox.turnitdown.data;
 
 import android.databinding.BaseObservable;
-import android.databinding.BindingAdapter;
-import android.databinding.InverseBindingMethod;
-import android.databinding.InverseBindingMethods;
+import android.databinding.Bindable;
 import android.databinding.Observable;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
-import android.widget.Spinner;
+
+import com.dallinwilcox.turnitdown.BR;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -19,6 +18,7 @@ import java.lang.annotation.RetentionPolicy;
  * Referenced
  * https://developer.android.com/studio/write/annotations.html#enum-annotations
  * https://halfthought.wordpress.com/2016/03/23/2-way-data-binding-on-android/
+ * https://medium.com/google-developers/android-data-binding-observability-9de4ff3fe038
  */
 
 public class Device extends BaseObservable implements Parcelable{
@@ -114,116 +114,143 @@ public class Device extends BaseObservable implements Parcelable{
             return new Device[size];
         }
     };
+
+    @Bindable
     public String getId() { return id; }
 
     public void setId(String id) {
         this.id = id;
+        notifyPropertyChanged(BR.id);
     }
 
+    @Bindable
     public String getUser() {
         return user;
     }
 
     public void setUser(String user) {
         this.user = user;
+        notifyPropertyChanged(BR.user);
     }
 
+    @Bindable
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+        notifyPropertyChanged(BR.name);
     }
 
+    @Bindable
     public String getModel() {
         return model;
     }
 
     public void setModel(String model) {
         this.model = model;
+        notifyPropertyChanged(BR.model);
     }
 
+    @Bindable
     public String getManufacturer() {
         return manufacturer;
     }
 
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
+        notifyPropertyChanged(BR.manufacturer);
     }
 
-    @DeviceType
+    @DeviceType @Bindable
     public int getDeviceType() {
         return deviceType;
     }
 
     public void setDeviceType(@DeviceType int deviceType) {
         this.deviceType = deviceType;
+        notifyPropertyChanged(BR.deviceType);
     }
 
+    @Bindable
     public int getMediaVolume() {
         return mediaVolume;
     }
 
     public void setMediaVolume(int mediaVolume) {
         this.mediaVolume = mediaVolume;
+        notifyPropertyChanged(BR.mediaVolume);
     }
 
-
+    @Bindable
     public int getMediaMaxVolume() {
         return mediaMaxVolume;
     }
 
     public void setMediaMaxVolume(int mediaMaxVolume) {
         this.mediaMaxVolume = mediaMaxVolume;
+        notifyPropertyChanged(BR.mediaMaxVolume);
     }
 
+    @Bindable
     public int getAlarmVolume() {
         return alarmVolume;
     }
 
     public void setAlarmVolume(int alarmVolume) {
         this.alarmVolume = alarmVolume;
+        notifyPropertyChanged(BR.alarmVolume);
     }
 
+    @Bindable
     public int getAlarmMaxVolume() {
         return alarmMaxVolume;
     }
 
     public void setAlarmMaxVolume(int alarmMaxVolume) {
         this.alarmMaxVolume = alarmMaxVolume;
+        notifyPropertyChanged(BR.alarmMaxVolume);
     }
 
+    @Bindable
     public int getRingVolume() {
         return ringVolume;
     }
 
     public void setRingVolume(int ringVolume) {
         this.ringVolume = ringVolume;
+        notifyPropertyChanged(BR.ringVolume);
     }
 
+    @Bindable
     public int getRingMaxVolume() {
         return ringMaxVolume;
     }
 
     public void setRingMaxVolume(int ringMaxVolume) {
         this.ringMaxVolume = ringMaxVolume;
+        notifyPropertyChanged(BR.ringMaxVolume);
     }
 
+    @Bindable
     public int getNotificationVolume() {
         return notificationVolume;
     }
 
     public void setNotificationVolume(int notificationVolume) {
         this.notificationVolume = notificationVolume;
+        notifyPropertyChanged(BR.notificationMaxVolume);
     }
 
+    @Bindable
     public int getNotificationMaxVolume() {
         return notificationMaxVolume;
     }
 
     public void setNotificationMaxVolume(int notificationMaxVolume) {
         this.notificationMaxVolume = notificationMaxVolume;
+        notifyPropertyChanged(BR.notificationMaxVolume);
     }
 
     public void setVolumes(DeviceVolumes deviceVolumes)
@@ -236,6 +263,8 @@ public class Device extends BaseObservable implements Parcelable{
         this.ringMaxVolume = deviceVolumes.ringMaxVolume;
         this.notificationVolume = deviceVolumes.notificationVolume;
         this.notificationMaxVolume = deviceVolumes.notificationMaxVolume;
+        //notify entire object has changed instead of each field individually since majority changed
+        notifyChange();
     }
     public DeviceVolumes getVolumes()
     {
