@@ -28,6 +28,9 @@ public class DeviceVolumes {
     int notificationVolume;
     int notificationMaxVolume;
 
+    public DeviceVolumes ()
+    {}
+
     public DeviceVolumes(int mediaVolume, int mediaMaxVolume, int alarmVolume, int alarmMaxVolume,
                          int ringVolume, int ringMaxVolume, int notificationVolume, int notificationMaxVolume) {
         this.mediaVolume = mediaVolume;
