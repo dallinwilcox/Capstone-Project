@@ -60,8 +60,9 @@ public class DeviceDetailFragment extends Fragment {
         volumeListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                device = dataSnapshot.getValue(Device.class);
+                // Get device object and use the values to update the UI
+                DataSnapshot childDevice = dataSnapshot.getChildren().iterator().next();
+                device = childDevice.getValue(Device.class);
                 Log.d(TAG, "Device updated in DB " + dataSnapshot.getKey() + device.toString() );
                 //not sure if need to call binding.setDevice(device) or binding.notifyChange()
             }
@@ -104,10 +105,10 @@ public class DeviceDetailFragment extends Fragment {
     }
 
     private void sendNotification(Map<String, Object> data) {
+        Log.d(TAG, "deviceId = " + device.getId() + " data = " + data);
         DatabaseReference dbRef = FirebaseDatabase.getInstance()
-                .getReference("/notify/" + device.getId());
+                .getReference("/notify/" + device.getId() + "/data");
         dbRef.setValue(data);
-        //TODO ensure permissions are set correctly
     }
 
 }
