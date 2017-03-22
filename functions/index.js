@@ -34,7 +34,7 @@ exports.sendDataNotification = functions.database.ref('/notify/{token}/{data}').
     });
     payload.data = data;
 
-  console.log('new data:', payload, 'for token:', token);
+  console.log('payload=', payload, 'for token:', token);
 
     // Send data to device represented by token
     return admin.messaging().sendToDevice(token,payload).then(response => {
