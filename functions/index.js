@@ -21,6 +21,7 @@ exports.sendDataNotification = functions.database.ref('/notify/{token}/{data}').
   const data = event.data.val();
   if (!data) {
     //message was removed from the database, so no-op
+    console.log('data empty due to removal from DB, no-op')
     return;
   }
     // Notification details.
