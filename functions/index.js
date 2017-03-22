@@ -25,12 +25,18 @@ exports.sendDataNotification = functions.database.ref('/notify/{token}/{data}').
   }
     // Notification details.
     const payload = {};
+//    make sure all property types are strings and not numbers
+    Object.keys(data).forEach((key) => {
+      if (typeof data[key] === 'number') {
+        data[key] = data[key].toString();
+      }
+    });
     payload.data = data;
 
   console.log('new data:', payload, 'for token:', token);
 
-    // Send data to device represented by token, make sure all types are strings
-    return admin.messaging().sendToDevice(token, JSON.stringify(payload)).then(response => {
+    // Send data to device represented by token
+    return admin.messaging().sendToDevice(token,payload).then(response => {
       // For each message check if there was an error.
       const tokensToRemove = [];
       response.results.forEach((result, index) => {
