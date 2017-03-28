@@ -38,18 +38,28 @@ public class TidFirebaseMessagingService extends FirebaseMessagingService {
         Map<String, String> data = remoteMessage.getData();
 
         if (data.containsKey("deviceDeleted")) {
+            Log.d(TAG, "deleting Device");
             DeviceCache.removeDevice(getApplicationContext());
             return;
         }
         AudioManager audioMgr = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        //remote is sending volumes to set for this device
         if (data.containsKey(DeviceVolumes.MEDIA_VOLUME)) {
+            Log.d(TAG, "setting volumes");
             DeviceVolumes volumes = new DeviceVolumes(data);
             VolumeHelper.setVolumes(audioMgr, volumes);
+            //write updated volumes back to db
+            updateDeviceVolumesInDatabase(VolumeHelper.getVolumes(audioMgr).toMap());
         }
         //remote is requesting current volumes for this device
         else if (data.containsKey(VOLUME_REQUEST)) {
+            Log.d(TAG, "retrieving volumes");
             DeviceVolumes volumes = VolumeHelper.getVolumes(audioMgr);
             updateDeviceVolumesInDatabase(volumes.toMap());
+        }
+        else
+        {
+            Log.d(TAG, "doing nothing");
         }
     }
 
