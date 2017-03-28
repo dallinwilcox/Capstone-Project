@@ -44,7 +44,6 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
     @BindView(R.id.device_list) RecyclerView deviceList;
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.toolbar) Toolbar toolbar;
-    private boolean isTablet;
     private final String TAG = "DeviceListActivity";
     private DeviceListAdapter deviceListAdapter;
     private String userId = "";
@@ -93,7 +92,6 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
         deviceListAdapter = new DeviceListAdapter(userId);
         deviceList.setAdapter(deviceListAdapter);
         deviceListAdapter.setItemClick(this);
-        isTablet = DeviceAttributes.isTablet(getApplicationContext());
     }
 
     @Override
@@ -155,7 +153,7 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
 
     @Override
     public void onItemClicked(int position) {
-        if (isTablet) {
+        if (DeviceAttributes.isTablet(getApplicationContext())) {
             Bundle arguments = new Bundle();
             arguments.putParcelable(Device.DEVICE_EXTRA, deviceListAdapter.get(position));
             DeviceDetailFragment fragment = new DeviceDetailFragment();
