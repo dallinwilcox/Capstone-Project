@@ -64,7 +64,7 @@ public class DeviceDetailFragment extends Fragment {
                 DataSnapshot childDevice = dataSnapshot.getChildren().iterator().next();
                 device = childDevice.getValue(Device.class);
                 Log.d(TAG, "Device updated in DB " + dataSnapshot.getKey() + device.toString() );
-                //not sure if need to call binding.setDevice(device) or binding.notifyChange()
+                binding.setDevice(device); //update the data binding to refer to the updated object
             }
 
             //TODO clean up listener w/ fragment lifecycle
