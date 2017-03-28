@@ -56,7 +56,6 @@ public class DeviceDetailFragment extends Fragment {
         device = getArguments().getParcelable(Device.DEVICE_EXTRA);
         dbRef = FirebaseDatabase.getInstance().getReference("devices/" + device.getUser());
         Query query = dbRef.orderByChild("id").equalTo(device.getId());
-        //TODO FIXME this query is returning user object instead of device object
         volumeListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -67,7 +66,6 @@ public class DeviceDetailFragment extends Fragment {
                 binding.setDevice(device); //update the data binding to refer to the updated object
             }
 
-            //TODO clean up listener w/ fragment lifecycle
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message

@@ -64,7 +64,6 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
         }
         else//not logged in
         {
-            //TODO fix loop on finishing auth activity, maybe by making auth the default activity.
             startActivity( new Intent (getApplicationContext(), AuthActivity.class));
         }
         fab.setOnClickListener(new View.OnClickListener() {
