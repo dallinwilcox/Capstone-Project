@@ -38,18 +38,29 @@
         <activity android:name=".DevicePropertiesActivity"></activity>
 
         <!-- FirebaseInstanceIdService performs security checks at runtime,
-      no need for explicit permissions despite exported="true"             -->
+            no need for explicit permissions despite exported="true"
+            Service handles device token changes                        -->
         <service android:name=".services.TidFirebaseInstanceIdService" android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
+        <!-- Service to handle FCM messages -->
         <service
             android:name=".services.TidFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
+        <service android:name=".services.DeviceListWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+        <receiver android:name="DeviceListWidgetProvider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/device_list_appwidget_info" />
+        </receiver>
     </application>
 
 </manifest>
