@@ -9,7 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dallinwilcox.turnitdown.data.Device;
+import com.dallinwilcox.turnitdown.data.DeviceDescription;
 import com.dallinwilcox.turnitdown.inf.OnItemClick;
+import com.dallinwilcox.turnitdown.inf.ResourceFinder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -153,25 +155,12 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
     public void onBindViewHolder(final DeviceListViewHolder holder, int position) {
         holder.device = adapterDeviceList.get(position);
         holder.deviceName.setText(holder.device.getName());
-        String[] deviceTypes = holder.deviceIcon.getContext().getResources().getStringArray(R.array.device_types_array);
-        switch (holder.device.getDeviceType()) {
-            case Device.WATCH:
-                holder.deviceIcon.setImageResource(R.drawable.ic_watch_black_24dp);
-                holder.deviceIcon.setContentDescription(deviceTypes[Device.WATCH]);
-                break;
-            case Device.TV:
-                holder.deviceIcon.setImageResource(R.drawable.ic_tv_black_24dp);
-                holder.deviceIcon.setContentDescription(deviceTypes[Device.TV]);
-                break;
-            case Device.TABLET:
-                holder.deviceIcon.setImageResource(R.drawable.ic_tablet_black_24dp);
-                holder.deviceIcon.setContentDescription(deviceTypes[Device.TABLET]);
-                break;
-            case Device.PHONE:
-            default:
-                holder.deviceIcon.setImageResource(R.drawable.ic_smartphone_black_24dp);
-                holder.deviceIcon.setContentDescription(deviceTypes[Device.PHONE]);
-        }
+
+        DeviceDescription description =
+                ResourceFinder.findResources(
+                        holder.deviceIcon.getContext(), holder.device.getDeviceType());
+        holder.deviceIcon.setImageResource(description.getIconResourceId());
+        holder.deviceIcon.setContentDescription(description.getDescription());
     }
 
     @Override
