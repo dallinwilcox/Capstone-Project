@@ -13,6 +13,8 @@ import com.dallinwilcox.turnitdown.data.DeviceDescription;
 public class ResourceFinder {
     public static DeviceDescription findResources(Context context, @Device.DeviceType int deviceType)
     {
+        //since context is only used to retrieve String array, I might consider passing in
+        //device_types_array instead
         String[] deviceTypes = context.getResources().getStringArray(R.array.device_types_array);
         int iconResourceId = R.drawable.ic_smartphone_black_24dp;
         String contentDescription = deviceTypes[Device.PHONE];
