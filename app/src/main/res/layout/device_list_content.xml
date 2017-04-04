@@ -8,30 +8,6 @@
     android:layout_height="wrap_content"
     card_view:cardCornerRadius="4dp"
     android:padding="@dimen/general_padding">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/device_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:paddingTop="@dimen/text_margin"
-            android:paddingLeft="@dimen/text_margin"
-            tools:src="@drawable/ic_tablet_black_24dp"/>
-            <!-- android:contentDescription is set programmatically when binding the viewholder-->
 
-        <TextView
-            android:id="@+id/device_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/device_icon"
-            android:layout_alignParentTop="true"
-            android:layout_margin="@dimen/text_margin"
-            android:textSize="24sp"
-            android:textAppearance="?attr/textAppearanceListItem"
-            tools:text="@string/device_name"
-            />
-    </RelativeLayout>
+    <include layout="@layout/device_item" />
 </android.support.v7.widget.CardView>
