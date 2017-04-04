@@ -1,6 +1,5 @@
 package com.dallinwilcox.turnitdown.services;
 
-import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +8,19 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.dallinwilcox.turnitdown.R;
+import com.dallinwilcox.turnitdown.data.Device;
+import com.dallinwilcox.turnitdown.data.DeviceDescription;
+import com.dallinwilcox.turnitdown.inf.DeviceCache;
+import com.dallinwilcox.turnitdown.inf.ResourceFinder;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 /**
  * Created by dcwilcox on 3/30/2017.
@@ -22,8 +34,10 @@ public class DeviceListWidgetService extends RemoteViewsService {
     }
     class DeviceListRemoteViewsFactory implements RemoteViewsFactory {
         private Context context;
+        private DatabaseReference dbRef;
+        private  ValueEventListener deviceListener;
         private int appWidgetId;
-        private int deviceCount;
+        private ArrayList<Device> deviceList;
 
         public DeviceListRemoteViewsFactory(Context context, Intent intent)
         {
@@ -35,6 +49,29 @@ public class DeviceListWidgetService extends RemoteViewsService {
         public void onCreate() {
             Log.d(TAG, "created");
             //Init Firebase Query
+            dbRef = FirebaseDatabase.getInstance().getReference("devices/" + DeviceCache.getUserId(context));
+            Query query = dbRef.orderByChild("id").limitToFirst(5);
+            deviceListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // Get List of device objects to use the values to update the UI
+                    //referenced Firebase docs for getValue(GenericTypeIndicator<T>t)
+                    GenericTypeIndicator<ArrayList<Device>> t =
+                        new GenericTypeIndicator<ArrayList<Device>>(){};
+                    deviceList = dataSnapshot.getValue(t);
+                    //notify an update occurred
+                    //not sure if I need to do this...
+                    DeviceListRemoteViewsFactory.this.notifyAll();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Getting Post failed, log a message
+                    Log.w(TAG, "onCancelled", databaseError.toException());
+                    //TODO consider displaying error to the user somehow, by returning an error view
+                }
+            };
+            query.addValueEventListener(deviceListener);
         }
 
         @Override
@@ -45,23 +82,29 @@ public class DeviceListWidgetService extends RemoteViewsService {
         @Override
         public void onDestroy() {
             //Disconnect Firebase Listener
+            dbRef.removeEventListener(deviceListener);
         }
 
         @Override
         public int getCount() {
-            return deviceCount;
+            if (null == deviceList){
+                return 0;
+            }
+            //Intentionally limiting # returned by the query, so no need to worry about int overflow
+            return deviceList.size();
         }
 
         @Override
         public RemoteViews getViewAt(int position) {
             Log.d(TAG, "getViewAt: " + position);
-//            cursor.moveToPosition(position);
+            Device viewDevice = deviceList.get(position);
+            DeviceDescription deviceDescription =
+                    ResourceFinder.findResources(context, viewDevice.getDeviceType());
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.device_item);
-//            Log.d(TAG, "setting home_name to " + cursor.getString(scoresAdapter.COL_HOME));
-//            remoteViews.setTextViewText(R.id.home_name, cursor.getString(scoresAdapter.COL_HOME));
-//            remoteViews.setTextViewText(R.id.away_name, cursor.getString(scoresAdapter.COL_AWAY));
-//            remoteViews.setTextViewText(R.id.score_textview, Utilies.getScores(cursor.getInt(scoresAdapter.COL_HOME_GOALS),cursor.getInt(scoresAdapter.COL_AWAY_GOALS)));
-//            remoteViews.setTextViewText(R.id.data_textview, cursor.getString(scoresAdapter.COL_MATCHTIME));
+            remoteViews.setImageViewResource(R.id.device_icon, deviceDescription.getIconResourceId());
+            //set content description for accessibility
+            remoteViews.setContentDescription(R.id.device_icon, deviceDescription.getDescription());
+            remoteViews.setTextViewText(R.id.device_name, viewDevice.getName());
             return remoteViews;
         }
 
