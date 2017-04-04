@@ -13,6 +13,7 @@
     <string name="device_model">Device Model</string>
     <string name="action_signOut">Sign Out</string>
     <string name="error_adding_device">Error adding your device, try logging in again</string>
+    <string name="empty_view_text">No devices to list pending server sync</string>
 
     <string-array name="device_types_array">
         <item>Phone</item>
