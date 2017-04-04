@@ -32,7 +32,7 @@ public class DeviceListWidgetProvider extends AppWidgetProvider {
             serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
 
-            // Create an Intent to launch ExampleActivity
+            // Create an Intent to launch DeviceListActivity
             Intent clickIntent = new Intent(context, DeviceListActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, clickIntent, 0);
 

@@ -60,6 +60,10 @@ public class DeviceListWidgetService extends RemoteViewsService {
                     for (DataSnapshot child: dataSnapshot.getChildren()) {
                         deviceList.add(child.getValue(Device.class));
                     }
+                    //notify the widget of the change
+                    //referenced //http://stackoverflow.com/a/12907825/2169923
+                    AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+                    appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_device_list);
                 }
 
                 @Override
