@@ -88,7 +88,6 @@ public class DeviceListWidgetService extends RemoteViewsService {
             if (null == deviceList){
                 return 0;
             }
-            //Intentionally limiting # returned by the query, so no need to worry about int overflow
             return deviceList.size();
         }
 
