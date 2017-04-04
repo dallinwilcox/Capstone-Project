@@ -54,14 +54,12 @@ public class DeviceListWidgetService extends RemoteViewsService {
             deviceListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    deviceList = new ArrayList<>();
                     // Get List of device objects to use the values to update the UI
-                    //referenced Firebase docs for getValue(GenericTypeIndicator<T>t)
-                    GenericTypeIndicator<ArrayList<Device>> t =
-                        new GenericTypeIndicator<ArrayList<Device>>(){};
-                    deviceList = dataSnapshot.getValue(t);
-                    //notify an update occurred
-                    //not sure if I need to do this...
-                    DeviceListRemoteViewsFactory.this.notifyAll();
+                    //referenced http://stackoverflow.com/a/40402958/2169923
+                    for (DataSnapshot child: dataSnapshot.getChildren()) {
+                        deviceList.add(child.getValue(Device.class));
+                    }
                 }
 
                 @Override
