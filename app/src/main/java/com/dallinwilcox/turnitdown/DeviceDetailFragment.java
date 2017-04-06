@@ -37,7 +37,7 @@ public class DeviceDetailFragment extends Fragment {
     private DatabaseReference dbRef;
     private static final String TAG = "DeviceDetailFragment";
     private DeviceDetailBinding binding;
-    private  ValueEventListener volumeListener;
+    private ValueEventListener volumeListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -50,13 +50,15 @@ public class DeviceDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!getArguments().containsKey(Device.DEVICE_EXTRA) || getArguments().getParcelable(Device.DEVICE_EXTRA) == null) {
+        if (!getArguments().containsKey(Device.DEVICE_EXTRA)
+                || getArguments().getParcelable(Device.DEVICE_EXTRA) == null) {
             throw new IllegalArgumentException("Must pass Device object with key DEVICE_EXTRA");
         }
         device = getArguments().getParcelable(Device.DEVICE_EXTRA);
 
         //use string formatter w/ string resource for consistent database reference
-        dbRef = FirebaseDatabase.getInstance().getReference(getString(R.string.fbdb_device_path, device.getUser()));
+        dbRef = FirebaseDatabase.getInstance()
+                .getReference(getString(R.string.fbdb_device_path, device.getUser()));
         Query query = dbRef.orderByChild("id").equalTo(device.getId());
         volumeListener = new ValueEventListener() {
             @Override
@@ -64,7 +66,7 @@ public class DeviceDetailFragment extends Fragment {
                 // Get device object and use the values to update the UI
                 DataSnapshot childDevice = dataSnapshot.getChildren().iterator().next();
                 device = childDevice.getValue(Device.class);
-                Log.d(TAG, "Device updated in DB " + dataSnapshot.getKey() + device.toString() );
+                Log.d(TAG, "Device updated in DB " + dataSnapshot.getKey() + device.toString());
                 binding.setDevice(device); //update the data binding to refer to the updated object
             }
 
@@ -78,7 +80,8 @@ public class DeviceDetailFragment extends Fragment {
         query.addValueEventListener(volumeListener);
 
         Activity activity = this.getActivity();
-        CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+        CollapsingToolbarLayout appBarLayout =
+                (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
         if (appBarLayout != null) {
             appBarLayout.setTitle(device.getName());
         }
@@ -97,8 +100,7 @@ public class DeviceDetailFragment extends Fragment {
     @Override
     public void onPause() {
         sendNotification(device.getVolumes().toMap());
-        if(null != dbRef)
-        {
+        if (null != dbRef) {
             dbRef.removeEventListener(volumeListener);
         }
         super.onPause();
