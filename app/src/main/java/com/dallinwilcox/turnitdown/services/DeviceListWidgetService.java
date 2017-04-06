@@ -1,5 +1,6 @@
 package com.dallinwilcox.turnitdown.services;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -16,7 +17,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
@@ -28,23 +28,25 @@ import java.util.ArrayList;
 
 public class DeviceListWidgetService extends RemoteViewsService {
     private static final String TAG = "DeviceListWidgetService";
+
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         return new DeviceListRemoteViewsFactory(this.getApplicationContext(), intent);
     }
+
     class DeviceListRemoteViewsFactory implements RemoteViewsFactory {
         private Context context;
         private DatabaseReference dbRef;
-        private  ValueEventListener deviceListener;
+        private ValueEventListener deviceListener;
         private int appWidgetId;
         private ArrayList<Device> deviceList;
 
-        public DeviceListRemoteViewsFactory(Context context, Intent intent)
-        {
+        public DeviceListRemoteViewsFactory(Context context, Intent intent) {
             this.context = context;
             appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
+
         @Override
         public void onCreate() {
             Log.d(TAG, "created");
@@ -57,7 +59,7 @@ public class DeviceListWidgetService extends RemoteViewsService {
                     deviceList = new ArrayList<>();
                     // Get List of device objects to use the values to update the UI
                     //referenced http://stackoverflow.com/a/40402958/2169923
-                    for (DataSnapshot child: dataSnapshot.getChildren()) {
+                    for (DataSnapshot child : dataSnapshot.getChildren()) {
                         deviceList.add(child.getValue(Device.class));
                     }
                     //notify the widget of the change
@@ -70,7 +72,6 @@ public class DeviceListWidgetService extends RemoteViewsService {
                 public void onCancelled(DatabaseError databaseError) {
                     // Getting Post failed, log a message
                     Log.w(TAG, "onCancelled", databaseError.toException());
-                    //TODO consider displaying error to the user somehow, by returning an error view
                 }
             };
             query.addValueEventListener(deviceListener);
@@ -89,7 +90,7 @@ public class DeviceListWidgetService extends RemoteViewsService {
 
         @Override
         public int getCount() {
-            if (null == deviceList){
+            if (null == deviceList) {
                 return 0;
             }
             return deviceList.size();
@@ -106,6 +107,11 @@ public class DeviceListWidgetService extends RemoteViewsService {
             //set content description for accessibility
             remoteViews.setContentDescription(R.id.device_icon, deviceDescription.getDescription());
             remoteViews.setTextViewText(R.id.device_name, viewDevice.getName());
+            // Create an Intent to launch DeviceListActivity
+
+            Intent clickIntent = new Intent();
+            clickIntent.putExtra(Device.DEVICE_EXTRA, viewDevice);
+            remoteViews.setOnClickFillInIntent(R.id.wrapper, clickIntent);
             return remoteViews;
         }
 
