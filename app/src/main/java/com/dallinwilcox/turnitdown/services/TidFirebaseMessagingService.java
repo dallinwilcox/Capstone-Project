@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.util.Log;
 
+import com.dallinwilcox.turnitdown.R;
 import com.dallinwilcox.turnitdown.data.DeviceVolumes;
 import com.dallinwilcox.turnitdown.inf.DeviceCache;
 import com.dallinwilcox.turnitdown.inf.VolumeHelper;
@@ -68,8 +69,9 @@ public class TidFirebaseMessagingService extends FirebaseMessagingService {
         String userId = DeviceCache.getUserId(appContext);
         String deviceId = DeviceCache.getDeviceId(appContext);
         if (!"".equals(userId) && !"".equals(deviceId)) {
+            //use string formatter w/ string resource for consistent database reference
             DatabaseReference dbRef = FirebaseDatabase.getInstance()
-                    .getReference("devices/" + userId + "/" + deviceId);
+                    .getReference(getString(R.string.fbdb_device_path, userId) + deviceId);
             dbRef.updateChildren(volumes);
         }
     }

@@ -54,7 +54,9 @@ public class DeviceDetailFragment extends Fragment {
             throw new IllegalArgumentException("Must pass Device object with key DEVICE_EXTRA");
         }
         device = getArguments().getParcelable(Device.DEVICE_EXTRA);
-        dbRef = FirebaseDatabase.getInstance().getReference("devices/" + device.getUser());
+
+        //use string formatter w/ string resource for consistent database reference
+        dbRef = FirebaseDatabase.getInstance().getReference(getString(R.string.fbdb_device_path, device.getUser()));
         Query query = dbRef.orderByChild("id").equalTo(device.getId());
         volumeListener = new ValueEventListener() {
             @Override

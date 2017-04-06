@@ -1,5 +1,6 @@
 package com.dallinwilcox.turnitdown;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,13 +13,11 @@ import com.dallinwilcox.turnitdown.data.Device;
 import com.dallinwilcox.turnitdown.data.DeviceDescription;
 import com.dallinwilcox.turnitdown.inf.OnItemClick;
 import com.dallinwilcox.turnitdown.inf.ResourceFinder;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -36,14 +35,14 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
     private ArrayList<String> deviceIndexList;
     private ChildEventListener adapterChildEventListener;
     private OnItemClick itemClick;
-    private DatabaseReference databaseReference;
+    private DatabaseReference dbRef;
 
-    public DeviceListAdapter(String userId) {
+    public DeviceListAdapter(String userId, Context context) {
         //Init DB and reference
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        //TODO Consider referencing a constant for path for re-use and better maintenance
-        //TODO handle null userId in case of user logged out.
-        databaseReference = database.getReference("devices/"+ userId +"/");
+
+        //use string formatter w/ string resource for consistent database reference
+        dbRef = database.getReference(context.getString(R.string.fbdb_device_path, userId));
         adapterDeviceList = new ArrayList<>();
         deviceIndexList = new ArrayList<>();
         // Read from the database with a listener
@@ -141,7 +140,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
                 //TODO make human readable error visible to the user with error.getMessage()
             }
         };
-        databaseReference.addChildEventListener(adapterChildEventListener);
+        dbRef.addChildEventListener(adapterChildEventListener);
     }
 
     @Override
@@ -207,7 +206,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
     }
     public void removeListener() {
         if (adapterChildEventListener != null) {
-            databaseReference.removeEventListener(adapterChildEventListener);
+            dbRef.removeEventListener(adapterChildEventListener);
         }
     }
 }

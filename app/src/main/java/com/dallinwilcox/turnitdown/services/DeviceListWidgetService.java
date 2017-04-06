@@ -1,6 +1,5 @@
 package com.dallinwilcox.turnitdown.services;
 
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -31,18 +30,16 @@ public class DeviceListWidgetService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new DeviceListRemoteViewsFactory(this.getApplicationContext(), intent);
+        return new DeviceListRemoteViewsFactory(intent);
     }
 
     class DeviceListRemoteViewsFactory implements RemoteViewsFactory {
-        private Context context;
         private DatabaseReference dbRef;
         private ValueEventListener deviceListener;
         private int appWidgetId;
         private ArrayList<Device> deviceList;
 
-        public DeviceListRemoteViewsFactory(Context context, Intent intent) {
-            this.context = context;
+        public DeviceListRemoteViewsFactory(Intent intent) {
             appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
@@ -51,7 +48,11 @@ public class DeviceListWidgetService extends RemoteViewsService {
         public void onCreate() {
             Log.d(TAG, "created");
             //Init Firebase Query
-            dbRef = FirebaseDatabase.getInstance().getReference("devices/" + DeviceCache.getUserId(context));
+            //use string formatter w/ string resource for consistent database reference
+            dbRef = FirebaseDatabase.getInstance()
+                    .getReference(
+                            getString(R.string.fbdb_device_path,
+                                    DeviceCache.getUserId(getApplicationContext())));
             Query query = dbRef.orderByChild("id").limitToFirst(5);
             deviceListener = new ValueEventListener() {
                 @Override
@@ -64,7 +65,7 @@ public class DeviceListWidgetService extends RemoteViewsService {
                     }
                     //notify the widget of the change
                     //referenced //http://stackoverflow.com/a/12907825/2169923
-                    AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+                    AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
                     appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_device_list);
                 }
 
@@ -98,6 +99,7 @@ public class DeviceListWidgetService extends RemoteViewsService {
 
         @Override
         public RemoteViews getViewAt(int position) {
+            Context context = getApplicationContext();
             Log.d(TAG, "getViewAt: " + position);
             Device viewDevice = deviceList.get(position);
             DeviceDescription deviceDescription =

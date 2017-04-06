@@ -44,9 +44,11 @@ public class DevicePropertiesActivity extends AppCompatActivity {
     {
         Context appContext = getApplicationContext();
         String deviceId = DeviceCache.getDeviceId(appContext);
-        //guard clause to handle first write
+        //guard clause to handle first write which pushes to create new device id
         if ( deviceId == "") {
-            DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("devices/" + device.getUser());
+            //use string formatter w/ string resource for consistent database reference
+            DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference(
+                    getString(R.string.fbdb_device_path, device.getUser()));
 
             DatabaseReference newDeviceRef = dbRef.push();
             deviceId= newDeviceRef.getKey();
@@ -55,6 +57,9 @@ public class DevicePropertiesActivity extends AppCompatActivity {
             DeviceCache.writeDeviceId(appContext, deviceId);
             return;
         }
-        FirebaseDatabase.getInstance().getReference("devices/" + device.getUser() + "/" + deviceId).setValue(device);
+        //use string formatter w/ string resource for consistent database reference
+        FirebaseDatabase.getInstance()
+                .getReference(getString(R.string.fbdb_device_path, device.getUser()) + deviceId)
+                .setValue(device);
     }
 }

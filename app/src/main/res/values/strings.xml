@@ -14,6 +14,7 @@
     <string name="action_signOut">Sign Out</string>
     <string name="error_adding_device">Error adding your device, try logging in again</string>
     <string name="empty_view_text">No devices to list pending login and/or server sync</string>
+    <string name="fbdb_device_path">devices/%1$s/</string>
 
     <string-array name="device_types_array">
         <item>Phone</item>

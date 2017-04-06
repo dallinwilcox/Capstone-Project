@@ -3,6 +3,7 @@ package com.dallinwilcox.turnitdown.services;
 import android.content.Context;
 import android.util.Log;
 
+import com.dallinwilcox.turnitdown.R;
 import com.dallinwilcox.turnitdown.inf.DeviceCache;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -33,8 +34,9 @@ public class TidFirebaseInstanceIdService extends FirebaseInstanceIdService {
         String deviceId = DeviceCache.getDeviceId(appContext);
         if ("" != userId && "" != deviceId)
         {
+            //use string formatter w/ string resource for consistent database reference
             DatabaseReference dbRef = FirebaseDatabase.getInstance()
-                    .getReference("devices/" + userId + "/" + deviceId + "/id");
+                    .getReference(getString(R.string.fbdb_device_path, userId) + deviceId + "/id");
             dbRef.setValue(refreshedToken);
         }
     }

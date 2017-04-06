@@ -89,7 +89,7 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
             }
         });
         assert deviceList != null;
-        deviceListAdapter = new DeviceListAdapter(userId);
+        deviceListAdapter = new DeviceListAdapter(userId, getApplicationContext());
         deviceList.setAdapter(deviceListAdapter);
         deviceListAdapter.setItemClick(this);
     }
