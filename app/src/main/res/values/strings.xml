@@ -12,9 +12,13 @@
     <string name="device_type">Device Type</string>
     <string name="device_model">Device Model</string>
     <string name="action_signOut">Sign Out</string>
+    <string name="action_delete_device">Delete Device</string>
+    <string name="action_edit_device">Edit Device</string>
     <string name="error_adding_device">Error adding your device, try logging in again</string>
     <string name="empty_view_text">No devices to list pending login and/or server sync</string>
     <string name="fbdb_device_path">devices/%1$s/</string>
+    <string name="action_delete">Delete</string>
+    <string name="delete_dialog_message">Delete device $1%s?</string>
 
     <string-array name="device_types_array">
         <item>Phone</item>

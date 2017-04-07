@@ -79,7 +79,7 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
                             (AudioManager) appContext.getSystemService(Context.AUDIO_SERVICE);
                     thisDevice.setVolumes(VolumeHelper.getVolumes(audioMgr));
                     Intent enrollDeviceIntent =
-                            DevicePropertiesActivity.createIntent(
+                            DevicePropertiesActivity.getEditIntent(
                                     appContext, thisDevice);
                     DeviceListActivity.this.startActivity(enrollDeviceIntent);
                 } else {

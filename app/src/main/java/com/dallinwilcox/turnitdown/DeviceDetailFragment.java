@@ -2,17 +2,22 @@ package com.dallinwilcox.turnitdown;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.dallinwilcox.turnitdown.data.Device;
 import com.dallinwilcox.turnitdown.databinding.DeviceDetailBinding;
+import com.dallinwilcox.turnitdown.inf.NotificationSender;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,7 +54,7 @@ public class DeviceDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
         if (!getArguments().containsKey(Device.DEVICE_EXTRA)
                 || getArguments().getParcelable(Device.DEVICE_EXTRA) == null) {
             throw new IllegalArgumentException("Must pass Device object with key DEVICE_EXTRA");
@@ -99,18 +104,35 @@ public class DeviceDetailFragment extends Fragment {
 
     @Override
     public void onPause() {
-        sendNotification(device.getVolumes().toMap());
+        NotificationSender.sendNotification(device, device.getVolumes().toMap());
         if (null != dbRef) {
             dbRef.removeEventListener(volumeListener);
         }
         super.onPause();
     }
 
-    private void sendNotification(Map<String, Object> data) {
-        Log.d(TAG, "deviceId = " + device.getId() + " data = " + data);
-        DatabaseReference dbRef = FirebaseDatabase.getInstance()
-                .getReference("/notify/" + device.getId() + "/data");
-        dbRef.setValue(data);
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_device, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_edit_device) {
+            Context appContext = getContext();
+            Intent editIntent = DevicePropertiesActivity.getEditIntent(appContext, device);
+            this.startActivity(editIntent);
+            return true;
+        }
+        if (id == R.id.action_delete_device) {
+            Context appContext = getContext();
+            Intent deleteIntent = DevicePropertiesActivity.getDeleteIntent(appContext, device);
+            this.startActivity(deleteIntent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

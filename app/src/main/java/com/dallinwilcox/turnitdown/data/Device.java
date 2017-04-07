@@ -34,6 +34,7 @@ public class Device extends BaseObservable implements Parcelable{
     public static final int TV = 3;
 
     String id;
+    String token;
     String user;
     String name;
     String model;
@@ -52,9 +53,9 @@ public class Device extends BaseObservable implements Parcelable{
     public Device()
     {}
 
-    public Device(String id, String user)
+    public Device(String token, String user)
     {
-        this.id = id;
+        this.token = token;
         this.user = user;
         this.name = Build.MODEL;
         this.model = Build.MODEL;
@@ -65,6 +66,7 @@ public class Device extends BaseObservable implements Parcelable{
 
     protected Device(Parcel in) {
         id = in.readString();
+        token = in.readString();
         user = in.readString();
         name = in.readString();
         model = in.readString();
@@ -83,6 +85,7 @@ public class Device extends BaseObservable implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
+        dest.writeString(token);
         dest.writeString(user);
         dest.writeString(name);
         dest.writeString(model);
@@ -121,6 +124,15 @@ public class Device extends BaseObservable implements Parcelable{
     public void setId(String id) {
         this.id = id;
         notifyPropertyChanged(BR.id);
+    }
+    @Bindable
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+        notifyPropertyChanged(BR.token);
     }
 
     @Bindable
@@ -280,6 +292,7 @@ public class Device extends BaseObservable implements Parcelable{
     public String toString() {
         return "Device{" +
                 "id='" + id + '\'' +
+                ", token='" + token +'\'' +
                 ", user='" + user + '\'' +
                 ", name='" + name + '\'' +
                 ", model='" + model + '\'' +

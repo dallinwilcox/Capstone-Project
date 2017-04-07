@@ -2,11 +2,13 @@ package com.dallinwilcox.turnitdown.services;
 
 import android.content.Context;
 import android.media.AudioManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.dallinwilcox.turnitdown.R;
 import com.dallinwilcox.turnitdown.data.DeviceVolumes;
 import com.dallinwilcox.turnitdown.inf.DeviceCache;
+import com.dallinwilcox.turnitdown.inf.NotificationSender;
 import com.dallinwilcox.turnitdown.inf.VolumeHelper;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -20,7 +22,6 @@ import java.util.Map;
  */
 
 public class TidFirebaseMessagingService extends FirebaseMessagingService {
-    public static final String VOLUME_REQUEST = "volumeRequest";
     private static final String TAG = "TIDFBMessagingService";
 
     @Override
@@ -32,13 +33,13 @@ public class TidFirebaseMessagingService extends FirebaseMessagingService {
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() == 0) {
-            //TODO consider handling this as an error scenario
+            Log.e(TAG, "onMessageReceived: message without data");
             return;
         }
         Log.d(TAG, "Message data payload: " + remoteMessage.getData());
         Map<String, String> data = remoteMessage.getData();
 
-        if (data.containsKey("deviceDeleted")) {
+        if (data.containsKey(NotificationSender.DEVICE_DELETED)) {
             Log.d(TAG, "deleting Device");
             DeviceCache.removeDevice(getApplicationContext());
             return;
@@ -53,7 +54,7 @@ public class TidFirebaseMessagingService extends FirebaseMessagingService {
             updateDeviceVolumesInDatabase(VolumeHelper.getVolumes(audioMgr).toMap());
         }
         //remote is requesting current volumes for this device
-        else if (data.containsKey(VOLUME_REQUEST)) {
+        else if (data.containsKey(NotificationSender.VOLUME_REQUEST)) {
             Log.d(TAG, "retrieving volumes");
             DeviceVolumes volumes = VolumeHelper.getVolumes(audioMgr);
             updateDeviceVolumesInDatabase(volumes.toMap());
@@ -68,7 +69,8 @@ public class TidFirebaseMessagingService extends FirebaseMessagingService {
         Context appContext = getApplicationContext();
         String userId = DeviceCache.getUserId(appContext);
         String deviceId = DeviceCache.getDeviceId(appContext);
-        if (!"".equals(userId) && !"".equals(deviceId)) {
+        //write the current volume values to the DB location for this device
+        if (!TextUtils.isEmpty(userId) && !TextUtils.isEmpty(deviceId)) {
             //use string formatter w/ string resource for consistent database reference
             DatabaseReference dbRef = FirebaseDatabase.getInstance()
                     .getReference(getString(R.string.fbdb_device_path, userId) + deviceId);
