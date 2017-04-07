@@ -168,5 +168,4 @@ public class DeviceListActivity extends AppCompatActivity implements OnItemClick
         intent.putExtra(Device.DEVICE_EXTRA, deviceListAdapter.get(position));
         startActivity(intent);
     }
-
 }

@@ -18,7 +18,7 @@
     <string name="empty_view_text">No devices to list pending login and/or server sync</string>
     <string name="fbdb_device_path">devices/%1$s/</string>
     <string name="action_delete">Delete</string>
-    <string name="delete_dialog_message">Delete device $1%s?</string>
+    <string name="delete_dialog_message">Delete device %1$s?</string>
 
     <string-array name="device_types_array">
         <item>Phone</item>
